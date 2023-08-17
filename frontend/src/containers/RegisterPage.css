@@ -1,0 +1,201 @@
+.split-screen{
+    display: flex;
+    flex-direction: column;
+}
+::-webkit-scrollbar {
+    display: none;
+}
+.right{
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none; 
+}
+.left{
+    height: 200px;
+}
+.left, .right{
+    display: flex;
+    justify-content: center;
+    align-items: center;   
+}
+.left{
+    background: url('/src/img/collegeinside.png');
+    background-size: cover;
+}
+.left .copy{
+    position: relative;
+    margin: 10px;
+    margin-right: 30px;
+    color: white;
+    text-align: left;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+.left p{
+    position: absolute;
+    font-weight: 400;
+    margin-top: 20px;
+    bottom: 10px;
+}
+.left h2{
+    position: relative;
+    top: 30%;
+    margin-top: 20px;
+}
+.right .cpoy{
+    color: black;
+    text-align: center;
+}
+.right .copy p{
+    margin: 1.5rem 0;
+    font-size: 0.875rem;
+}
+.right form{
+    height: 100%;
+    width: 65%;
+}
+form form-controll {
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid #dfe7f1;
+    border-radius: 0;
+    box-shadow: none;
+    outline: none;
+    color: inherit;
+    text-indent: 0px;
+    height: 40px;
+}
+.form-groupp{
+    margin-bottom: 25px;
+}
+
+.btnt{
+    display: block;
+    width: 100%;
+    background: #2e4c68;
+    color: white;
+    font-weight: 550;
+    border: none;
+    padding: .6rem;
+    border-radius: 8px;
+    font-size: 16px;
+    letter-spacing: 1px;
+}
+.btnt:hover{
+    background: #49667a;
+    cursor: pointer;
+    color: white;
+}
+.left .copy p{
+    display: none;
+}
+.left .copy{
+    height: 100%;
+}
+.logo-container{
+    margin-top: 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.btn-container{
+    margin-top: 3rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+}
+
+.logo-container .college {
+    width: 40%; /* Adjust the width as per your requirement */
+    height: auto; /* Maintain aspect ratio */
+    object-fit: contain; /* Ensures the entire logo is visible */
+    margin-right: 10px; /* Add space between the logos */
+  }
+.logo-container .kfu {
+    width: 20%; /* Adjust the width as per your requirement */
+    height: auto; /* Maintain aspect ratio */
+    object-fit: contain; /* Ensures the entire logo is visible */
+    margin-right: 10px; /* Add space between the logos */
+  }
+.copy .loginword{
+    margin-top: 5rem;
+    color: #2e4c68;
+    font-size: 1.8rem;
+}
+.copy  .createword{
+    margin-top: 5rem;
+    margin-bottom: 2rem;
+    color: #2e4c68;
+    font-size: 1.7rem;
+}
+a{
+    text-decoration: none;
+    color: #1f6af5;
+    font-weight: 510;
+}
+.right form{
+    height: 100%;
+    width: 85%;
+}
+.container {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 15px;
+    margin-bottom: 1rem;
+    padding: 0;
+  }
+  .div2{
+    margin: 0;
+  }
+  .placeholder-text {
+    color: gray; /* Change the color */
+    font-style: italic; /* Apply italic font style */
+  }
+  
+  /* Change the color of the selected option */
+  #formGridState option:checked {
+    background-color: #c61515; /* Change the background color */
+  }
+
+
+  @media screen and (min-width: 1000px){
+    .split-screen{
+        flex-direction: row;
+        height: 100vh;
+    }
+    .left , .right{
+        display: flex;
+        width: 50%;
+        height: auto;
+    }
+    .left .copy p{
+        display: block;
+    }
+    .left{
+        flex-basis: 70%;
+    }
+    .split-screen::-webkit-scrollbar {
+        display: none;
+    }
+    .right{
+        -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;
+    overflow-y: scroll;
+    }
+    
+}
+
+@media screen and (max-width: 999px){
+    .left h2{
+        margin: auto;
+        margin-left: 2px;
+        
+    }
+    .copy .loginword, .copy .createword{
+        margin-top: 3.2rem;
+    }
+    .left{
+        width: 101%;
+        height: 9rem;
+    }
+}
