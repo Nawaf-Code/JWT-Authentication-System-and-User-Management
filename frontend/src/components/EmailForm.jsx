@@ -29,6 +29,7 @@ function EmailForm(props){
     }
 
     if(requestSent){
+        props.type('create')
         return <Navigate to='/' />
     }
     

@@ -43,7 +43,10 @@ function MainForm(props) {
     const handleMouseDownPassword = (event) => {
         event.preventDefault();
     };
-    console.log('isAuthenticated',props.isAuthenticated)
+
+        console.log('isEmailValid',props.isEmailValid);
+    
+    
     if(props.isAuthenticated){
         return <Navigate to='/' />
     }
@@ -108,6 +111,7 @@ function MainForm(props) {
 }
 
 const mapStateToProps = state => ({
-    isAuthenticated: state.auth.isAuthenticated
+    isAuthenticated: state.auth.isAuthenticated,
+    isEmailValid: state.auth.isEmailValid
 })
 export default connect(mapStateToProps, {login})(MainForm)
