@@ -48,16 +48,22 @@ export default function CreateForm(props){
     ]
 
     const [values, setValues] = React.useState({
-        password: "",
-        showPassword: false,
+        newPassword: "",
+        showNewPassword: false,
+        reNewPassword: "",
+        showReNewPassword: false,
     });
 
-    const handlePasswordChange = (prop) => (event) => {
-        setValues({ ...values, [prop]: event.target.value });
+    const handlePasswordChange = (prop) => (e) => {
+        setValues({ ...values, [e.target.name]: e.target.value });
     };
 
-    const handleClickShowPassword = () => {
-        setValues({ ...values, showPassword: !values.showPassword });
+    const handleClickShowPassword1 = () => {
+        setValues({ ...values, showNewPassword: !values.showNewPassword });
+    };
+
+    const handleClickShowPassword2 = () => {
+        setValues({ ...values, showReNewPassword: !values.showReNewPassword });
     };
 
     const handleMouseDownPassword = (event) => {
@@ -66,7 +72,7 @@ export default function CreateForm(props){
 
     const handleAuthMod = () => {
         props.type('login')
-    }
+    };
 
     function handleSelectChange(event){
         setSelectedRole(event.target.value);
@@ -97,16 +103,16 @@ export default function CreateForm(props){
                 <div className="form-group">
                 <Input
                 placeholder='Password'
-                name='pass'
+                name='newPassword'
                 className="form-control"
                 disableUnderline={true}
-                type={values.showPassword ? "text" : "password"}
+                type={values.showNewPassword ? "text" : "password"}
                 onChange={handlePasswordChange("password")}
-                value={values.password}
+                value={values.newPassword}
                 endAdornment={
                     <InputAdornment position="end" >
-                        <IconButton onClick={handleClickShowPassword} onMouseDown={handleMouseDownPassword} >
-                            {values.showPassword ? <Visibility /> : <VisibilityOff />}
+                        <IconButton onClick={handleClickShowPassword1} onMouseDown={handleMouseDownPassword} >
+                            {values.showNewPassword ? <Visibility /> : <VisibilityOff />}
                         </IconButton>
                     </InputAdornment>}
                 />
@@ -114,16 +120,16 @@ export default function CreateForm(props){
                 <div className="form-group">
                 <Input
                 placeholder="Confirm Password"
-                name='pass'
+                name='reNewPassword'
                 className="form-control"
                 disableUnderline={true}
-                type={values.showPassword ? "text" : "password"}
+                type={values.showReNewPassword ? "text" : "password"}
                 onChange={handlePasswordChange("password")}
-                value={values.password}
+                value={values.reNewPassword}
                 endAdornment={
                     <InputAdornment position="end" >
-                        <IconButton onClick={handleClickShowPassword} onMouseDown={handleMouseDownPassword} >
-                            {values.showPassword ? <Visibility /> : <VisibilityOff />}
+                        <IconButton onClick={handleClickShowPassword2} onMouseDown={handleMouseDownPassword} >
+                            {values.showReNewPassword ? <Visibility /> : <VisibilityOff />}
                         </IconButton>
                     </InputAdornment>}
                 />

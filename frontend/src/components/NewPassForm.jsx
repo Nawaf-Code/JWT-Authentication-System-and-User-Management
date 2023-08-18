@@ -10,7 +10,7 @@ import VisibilityOff from "@material-ui/icons/VisibilityOff";
 import {Navigate} from 'react-router-dom';
 // @ts-ignore
 import Input from "@material-ui/core/Input";
-
+import { useParams } from 'react-router-dom';
 import { connect } from 'react-redux';
 
 import MainHeader from './MainHeader.jsx';
@@ -19,37 +19,33 @@ import { reset_password_confirm } from '../actions/auth.js';
 
 function NewPassForm(props){
     const [requestSent, setRequestSent] = useState(false);
-    const [formData, setFormData] = useState({
-        new_password: '',
-        re_new_password: ''
-    });
-    const {new_password, re_new_password} = formData;
-    const onChangeData = e => setFormData({ ...formData, [e.target.name]: e.target.value});
+    const { uid, token } = useParams();
     const onSubmit = e => {
         e.preventDefault();
-
-        const uid = props.match.params.uid;
-        const token = props.match.params.token;
-        props.reset_password_confirm(uid, token, new_password, re_new_password)
+        props.reset_password_confirm(uid, token, values.newPassword, values.reNewPassword);
         setRequestSent(true)
     };
-
     const [values, setValues] = React.useState({
-        password: "",
-        showPassword: false,
+        newPassword: "",
+        showNewPassword: false,
+        reNewPassword: "",
+        showReNewPassword: false,
     });
+    console.log(values.newPassword, values.reNewPassword);
+    const handleClickShowPassword1 = () => {
+        setValues({ ...values, showNewPassword: !values.showNewPassword });
+    };
 
-    const handleClickShowPassword = () => {
-        setValues({ ...values, showPassword: !values.showPassword });
+    const handleClickShowPassword2 = () => {
+        setValues({ ...values, showReNewPassword: !values.showReNewPassword });
     };
  
     const handleMouseDownPassword = (event) => {
         event.preventDefault();
     };
 
-    const handlePasswordChange = (prop) => (event) => {
-        setValues({ ...values, [prop]: event.target.value });
-        setFormData({ ...formData, password: event.target.value})
+    const handlePasswordChange = (prop) => (e) => {
+        setValues({ ...values, [e.target.name]: e.target.value });
     };
     if(requestSent){
         return <Navigate to='/' />
@@ -66,39 +62,37 @@ function NewPassForm(props){
                 
                 <div className='form-group' >
                 <Input
-                    placeholder='New Password'
-                    className="form-control"
-                    name='new_password'
-                    disableUnderline={true}
-                    type={values.showPassword ? "text" : "password"}
-                    onChange={handlePasswordChange("password")}
-                    value={values.password}
-                    endAdornment={
-                        <InputAdornment position="end" >
-                            <IconButton onClick={handleClickShowPassword} onMouseDown={handleMouseDownPassword} >
-                                {values.showPassword ? <Visibility /> : <VisibilityOff />}
-                            </IconButton>
-                        </InputAdornment>
-                    }
-                    />
+                placeholder='Password'
+                name='newPassword'
+                className="form-control"
+                disableUnderline={true}
+                type={values.showNewPassword ? "text" : "password"}
+                onChange={handlePasswordChange("password")}
+                value={values.newPassword}
+                endAdornment={
+                    <InputAdornment position="end" >
+                        <IconButton onClick={handleClickShowPassword1} onMouseDown={handleMouseDownPassword} >
+                            {values.showNewPassword ? <Visibility /> : <VisibilityOff />}
+                        </IconButton>
+                    </InputAdornment>}
+                />
                 </div>
-                <div className='form-group' >
-                    <Input
-                    placeholder='Confirm New Password'
-                    className="form-control"
-                    name='re_new_password'
-                    disableUnderline={true}
-                    type={values.showPassword ? "text" : "password"}
-                    onChange={handlePasswordChange("password")}
-                    value={values.password}
-                    endAdornment={
-                        <InputAdornment position="end" >
-                            <IconButton onClick={handleClickShowPassword} onMouseDown={handleMouseDownPassword} >
-                                {values.showPassword ? <Visibility /> : <VisibilityOff />}
-                            </IconButton>
-                        </InputAdornment>
-                    }
-                    />
+                <div className="form-group">
+                <Input
+                placeholder="Confirm Password"
+                name='reNewPassword'
+                className="form-control"
+                disableUnderline={true}
+                type={values.showReNewPassword ? "text" : "password"}
+                onChange={handlePasswordChange("password")}
+                value={values.reNewPassword}
+                endAdornment={
+                    <InputAdornment position="end" >
+                        <IconButton onClick={handleClickShowPassword2} onMouseDown={handleMouseDownPassword} >
+                            {values.showReNewPassword ? <Visibility /> : <VisibilityOff />}
+                        </IconButton>
+                    </InputAdornment>}
+                />
                 </div>
                 
                 
