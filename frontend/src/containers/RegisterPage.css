@@ -157,7 +157,6 @@ a{
     background-color: #c61515; /* Change the background color */
   }
 
-
   @media screen and (min-width: 1000px){
     .split-screen{
         flex-direction: row;

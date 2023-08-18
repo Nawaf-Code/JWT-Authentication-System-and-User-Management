@@ -28,7 +28,7 @@ function MainForm(props) {
         showPassword: false,
     });
 
-    const onChangeData = e => setFormData({ ...formData, [e.target.name]: e.target.value})
+    const onChangeData = e => setFormData({ ...formData, [e.target.name]: e.target.value});
 
     const onSubmit = e => {
         e.preventDefault();
@@ -52,8 +52,8 @@ function MainForm(props) {
         setFormData({ ...formData, password: event.target.value})
     };
 
-    const handleAuthMod = () => {
-        props.type(authMode)
+    const handleAuthMod = (mode) => {
+        props.type(mode)
     }
     
   return (
@@ -66,10 +66,10 @@ function MainForm(props) {
                 <h2 className='loginword'>Login</h2>
 
                 <div className='login-container'>
-                    <p>Are you new user? <Link onClick={() => handleAuthMod()} to="/create">Create Here</Link></p>
+                    <p>Are you new user? <Link onClick={() => handleAuthMod("create")} to="/create">Sign up</Link></p>
                 </div>
                 
-                <div className="form-group"><input className="form-control" type="text" name="username" value={username} onChange={e => onChangeData(e)} disableUnderline={true} placeholder="KFU ID" /></div>
+                <div className="form-group"><Input className="form-control" type="text" name="username" value={username} onChange={e => onChangeData(e)} disableUnderline={true} placeholder="KFU ID" /></div>
 
                 <div className="form-group">
 
@@ -93,10 +93,10 @@ function MainForm(props) {
                             <div className='div2'>
                                 <div className="mb-3 form-check">
                                     <input type="checkbox" className="form-check-input" id="exampleCheck1" />
-                                    <label className="form-check-label" htmlFor="exampleCheck1">Remember Me</label>
+                                    <label className="form-check-label" htmlFor="exampleCheck1">Remember me</label>
                                 </div>
                             </div>
-                            <a href="#" className='div1'> Forgot Password?</a>
+                            <Link onClick={() => handleAuthMod("email")} to="/reset-password">Forgot Password?</Link>
                         </div>
                 </div>
                 <button className='btnt' type='submit'>Login</button>

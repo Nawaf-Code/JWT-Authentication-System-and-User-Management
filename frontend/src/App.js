@@ -17,9 +17,9 @@ const App = () => {
         <Routes>
           <Route exact path='/' element={<RegisterPage type='login'/>} />
           <Route exact path='/create' element={<RegisterPage type='create'/>} />
+          <Route exact path='/reset-password' element={<RegisterPage type='email'/>} />
+          <Route exact path='/password/reset/confirm/:uid/:token' element={<RegisterPage type='newpass'/>} />
           <Route exact path='/activate/:uid/:token' element={<Activate />} />
-          <Route exact path='/reset-password' element={<ResetPassword />} />
-          <Route exact path='/password/reset/confirm/:uid/:token' element={<ResetPassword />} />
         </Routes>
       </Router>
     </Provider>

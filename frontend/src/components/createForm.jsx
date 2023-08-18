@@ -65,7 +65,7 @@ export default function CreateForm(props){
     };
 
     const handleAuthMod = () => {
-        props.type(authMode)
+        props.type('login')
     }
 
     function handleSelectChange(event){
@@ -83,7 +83,7 @@ export default function CreateForm(props){
                 <h2 className='createword'>Create Account</h2>
                 
                 <div className='form-group' >
-                <div className="row" >
+                <div className="form-row" >
                     <div className="col">
                         <Input type="text" disableUnderline={true} className="form-control" placeholder="First name" />
                     </div>
@@ -132,7 +132,7 @@ export default function CreateForm(props){
                 <div className="form-group">
                 <div className='form-row' >
                     <div className='col'>
-                        <select name="" class="custom-select">
+                        <select name="" className="custom-select">
                         <option value="" >
                         Select a Major...
                     </option>
@@ -152,7 +152,7 @@ export default function CreateForm(props){
                 <div className='form-row' >
 
                     <div className='col mb-3'>
-                        <select name="" class="custom-select" id="validationCustom04" onChange={handleSelectChange}>
+                        <select name="" className="custom-select" id="validationCustom04" onChange={handleSelectChange}>
                     <option value="" >
                         Select a Role...
                     </option>
@@ -166,7 +166,7 @@ export default function CreateForm(props){
 
 
                     <div className='col mb-3'>
-                    <select defaultValue="" class="custom-select" disabled={selectState ? false : true}> 
+                    <select defaultValue="" className="custom-select" disabled={selectState ? false : true}> 
                     {// @ts-ignore
                     (selectedRole !== 'SUPERVISOR' && selectedRole !== 'STUDENT') && (
                     <option value="" disabled>
@@ -191,22 +191,22 @@ export default function CreateForm(props){
                 {(
                     // @ts-ignore
                     selectedRole === 'STUDENT')&&(
-                        <div class="form-group">
-                            <div class="form-check">
+                        <div className="form-group">
+                            <div className="form-check">
                                 <input type="checkbox" className="form-check-input" id="invalidCheck" />
-                                <label class="form-check-label" for="invalidCheck">
-                                Set Me as a Leader
+                                <label className="form-check-label" for="invalidCheck">
+                                Set me as a leader
                                 </label>
                             </div>
                         </div>
                     )}
                
                 <button className='btnt' >create</button>
-                <p>Already have account? <Link onClick={() => handleAuthMod()} to="/">Login Here</Link></p>
+                <p>Already have account? <Link onClick={() => handleAuthMod()} to="/">Sign in</Link></p>
                 
                 <hr style={{ marginTop: '50px', borderCollapse:'collapse'}}/>
                 <div>
-                <p style={{textAlign: 'center'}}>By creating an account you agree to College <a href="">Terms of Service</a> and <a href="">Privacy Policy.</a></p>
+                <p style={{textAlign: 'center'}}>By creating an account you agree to College <Link href="">Terms of Service</Link> and <Link href="">Privacy Policy.</Link></p>
                 </div>
             </div>
 

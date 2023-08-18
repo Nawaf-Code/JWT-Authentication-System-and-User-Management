@@ -1,19 +1,35 @@
 import React, {useState} from 'react';
 import './RegisterPage.css';
-import MainHeader from '../components/MainHeader.jsx';
 import LoginForm from '../components/LoginForm.jsx';
-import CreateForm from '../components/createForm.jsx';
+// @ts-ignore
+import CreateForm from '../components/CreateForm.jsx';
+import EmailForm from '../components/EmailForm.jsx';
+import NewPassForm from '../components/NewPassForm.jsx';
 
 
 export default function RegisterPage(props) {
   const [authMode, setAuthMode] = useState(props.type)
 
-  const handleAuthMod = () => {
-    authMode == 'login' ? setAuthMode('create') : setAuthMode('login');
+  const handleAuthMod = (mode) => {
+
+    setAuthMode(mode);
 }
 
   const getAuthMode = (mode) => {
-    handleAuthMod()
+    handleAuthMod(mode)
+  }
+ console.log('currnet auth mode', authMode);
+  const currentForm = () => {
+    switch(authMode){
+      case "email":
+        return <EmailForm type={getAuthMode}/>
+      case "create":
+        return <CreateForm type={getAuthMode}/>
+      case "newpass":
+        return <NewPassForm/>
+      default:
+        return <LoginForm type={getAuthMode}/>
+    }
   }
   return (
     <div className='split-screen'>
@@ -28,11 +44,7 @@ export default function RegisterPage(props) {
       
       <div className='right'>
 
-            {authMode == 'login' ? (
-              <LoginForm type={getAuthMode}/>
-            ):(
-              <CreateForm type={getAuthMode}/>
-            )}
+            {currentForm()}
             
       </div>
     </div>
