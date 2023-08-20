@@ -4,6 +4,7 @@ import RegisterPage from "./containers/RegisterPage.jsx";
 import Activate from "./containers/Activate.jsx";
 import ResetPassword from "./containers/ResetPassword.jsx";
 import ResetPasswordConfirm from "./containers/ResetPasswordConfirm.jsx";
+import Notification from "./components/Notification.jsx";
 import { Provider } from "react-redux";
 import store from "./store.js";
 import './App.css';
@@ -20,6 +21,7 @@ const App = () => {
           <Route exact path='/reset-password' element={<RegisterPage type='email'/>} />
           <Route exact path='/password/reset/confirm/:uid/:token' element={<RegisterPage type='newpass'/>} />
           <Route exact path='/activate/:uid/:token' element={<Activate />} />
+          <Route exact path='/testing' element={<Notification/>} />
         </Routes>
       </Router>
     </Provider>

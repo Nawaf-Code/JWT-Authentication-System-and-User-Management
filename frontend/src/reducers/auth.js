@@ -10,6 +10,9 @@ import {
     PASSWORD_RESET_SUCCESS,
     PASSWORD_RESET_CONFIRM_FAIL,
     PASSWORD_RESET_CONFIRM_SUCCESS,
+    emailNotValid,
+    emailValid,
+    RESET,
     LOGOUT
 } from '../actions/types.js';
 
@@ -54,7 +57,22 @@ export default function(state = initialState, action){
                 ...state,
                 user: null
             }
-    
+
+        case emailNotValid:
+            return{
+                ...state,
+                isEmailValid: false,
+            }
+        case emailValid:
+            return{
+                ...state,
+                isEmailValid: true
+            }
+        case RESET:
+            return{
+                ...state,
+                isEmailValid: null
+            }
         case LOGIN_FAIL:
         case LOGOUT:
             localStorage.removeItem('access');
@@ -68,6 +86,10 @@ export default function(state = initialState, action){
             }
         case PASSWORD_RESET_FAIL:
         case PASSWORD_RESET_SUCCESS:
+            return{
+                ...state,
+                isEmailValid: null
+            }
         case PASSWORD_RESET_CONFIRM_FAIL:
         case PASSWORD_RESET_CONFIRM_SUCCESS:
             return {

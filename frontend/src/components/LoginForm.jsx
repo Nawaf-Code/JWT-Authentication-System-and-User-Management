@@ -8,11 +8,13 @@ import InputAdornment from "@material-ui/core/InputAdornment";
 // @ts-ignore
 import VisibilityOff from "@material-ui/icons/VisibilityOff";
 // @ts-ignore
+import Notification from './Notification.jsx';
 import Input from "@material-ui/core/Input";
 // @ts-ignore
 import {Link, Navigate} from 'react-router-dom';
 import MainHeader from './MainHeader.jsx';
 import { login } from '../actions/auth.js';
+
 // @ts-ignore
 import { connect } from 'react-redux';
 function MainForm(props) {
@@ -44,7 +46,6 @@ function MainForm(props) {
         event.preventDefault();
     };
 
-        console.log('isEmailValid',props.isEmailValid);
     
     
     if(props.isAuthenticated){
@@ -67,7 +68,7 @@ function MainForm(props) {
             <div className='login-form'>
 
                 <h2 className='loginword'>Login</h2>
-
+                <Notification/>
                 <div className='login-container'>
                     <p>Are you new user? <Link onClick={() => handleAuthMod("create")} to="/create">Sign up</Link></p>
                 </div>
@@ -106,6 +107,10 @@ function MainForm(props) {
 
             </div>
             </section>
+
+            {props.isEmailValid && (
+                <h2>your email is valid!</h2>
+            )}
         </form>
   )
 }

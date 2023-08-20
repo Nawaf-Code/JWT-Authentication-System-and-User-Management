@@ -1,5 +1,6 @@
 // @ts-ignore
 import axios from 'axios';
+
 import {
     LOGIN_SUCCESS,
     LOGIN_FAIL,
@@ -11,9 +12,38 @@ import {
     PASSWORD_RESET_SUCCESS,
     PASSWORD_RESET_CONFIRM_FAIL,
     PASSWORD_RESET_CONFIRM_SUCCESS,
+    emailValid, emailNotValid,
+    RESET,
     LOGOUT
 } from './types.js';
 
+
+export const check_email = (email) => async (dispatch) => {
+    const config = {
+        headers: {
+          'Content-Type': 'application/json',
+        }
+      };
+
+    const requestData = { email: email };
+    const body = JSON.stringify(requestData);
+
+    try {
+        const res = await axios.post(`${process.env.REACT_APP_API_URL}/check_email`, body, config);
+      //console.log(res.data.email_exists);
+  
+      if (res.data.email_exists) {
+        dispatch({ type: emailValid }); // Replace 'emailValid' with the actual action type for valid email
+      } else {
+        dispatch({ type: emailNotValid }); // Replace 'emailNotValid' with the actual action type for invalid email
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  };
+export const re_set = () => dispatch => {
+    dispatch({type: RESET});
+}
 export const checkAuthenticated = () => async dispatch => {
     if(localStorage.getItem('access')){
         const config = {

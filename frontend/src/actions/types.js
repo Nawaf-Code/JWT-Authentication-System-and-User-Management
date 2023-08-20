@@ -11,3 +11,6 @@ export const PASSWORD_RESET_CONFIRM_SUCCESS = 'PASSWORD_RESET_SUCCESS';
 export const EMAIL_VALIDATION_SUCCESS = 'EMAIL_VALIDATION_SUCCESS';
 export const EMAIL_VALIDATION_FAIL = 'EMAIL_VALIDATION_FAIL';
 export const LOGOUT = 'LOGOUT';
+export const emailValid = 'emailValid';
+export const emailNotValid = 'emailNotValid';
+export const RESET = 'RESET';
