@@ -13,7 +13,7 @@ import {
     PASSWORD_RESET_CONFIRM_FAIL,
     PASSWORD_RESET_CONFIRM_SUCCESS,
     emailValid, emailNotValid,
-    RESET,
+    RESET_EMAIL_STATE,
     LOGOUT
 } from './types.js';
 
@@ -41,8 +41,8 @@ export const check_email = (email) => async (dispatch) => {
       console.error(err);
     }
   };
-export const re_set = () => dispatch => {
-    dispatch({type: RESET});
+export const re_set_email_state = () => dispatch => {
+    dispatch({type: RESET_EMAIL_STATE});
 }
 export const checkAuthenticated = () => async dispatch => {
     if(localStorage.getItem('access')){

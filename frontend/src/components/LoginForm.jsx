@@ -1,5 +1,6 @@
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react';
 // @ts-ignore
+import { ToastContainer, toast } from 'react-toastify';
 import IconButton from "@material-ui/core/IconButton";
 // @ts-ignore
 import Visibility from "@material-ui/icons/Visibility";
@@ -8,8 +9,9 @@ import InputAdornment from "@material-ui/core/InputAdornment";
 // @ts-ignore
 import VisibilityOff from "@material-ui/icons/VisibilityOff";
 // @ts-ignore
-import Notification from './Notification.jsx';
 import Input from "@material-ui/core/Input";
+import 'react-toastify/dist/ReactToastify.css';
+import { re_set_email_state } from '../actions/auth.js';
 // @ts-ignore
 import {Link, Navigate} from 'react-router-dom';
 import MainHeader from './MainHeader.jsx';
@@ -28,7 +30,37 @@ function MainForm(props) {
     const [values, setValues] = React.useState({
         password: "",
         showPassword: false,
-    });
+    });    
+    const loadedNotify = () => {
+        toast.promise(
+            new Promise((resolve) => {
+                
+                setTimeout(() => {
+                    resolve();
+                    props.re_set_email_state();
+                },2000);
+            }),
+            {
+            pending: "Loading, please wait...",
+            success: "A password reset link has been sent to your email!"
+            },
+            {}
+        )
+    }
+
+    const notifyPass = () => toast.success('Your password has been changed successfully', {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: false,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        });
+    if (props.isEmailValid){
+        loadedNotify();
+    };
 
     const onChangeData = e => setFormData({ ...formData, [e.target.name]: e.target.value});
 
@@ -45,11 +77,13 @@ function MainForm(props) {
     const handleMouseDownPassword = (event) => {
         event.preventDefault();
     };
-
     
     
     if(props.isAuthenticated){
         return <Navigate to='/' />
+    }
+    if(props.isPassValid){
+        notifyPass();
     }
     const handlePasswordChange = (prop) => (event) => {
         setValues({ ...values, [prop]: event.target.value });
@@ -68,7 +102,6 @@ function MainForm(props) {
             <div className='login-form'>
 
                 <h2 className='loginword'>Login</h2>
-                <Notification/>
                 <div className='login-container'>
                     <p>Are you new user? <Link onClick={() => handleAuthMod("create")} to="/create">Sign up</Link></p>
                 </div>
@@ -107,16 +140,27 @@ function MainForm(props) {
 
             </div>
             </section>
-
-            {props.isEmailValid && (
-                <h2>your email is valid!</h2>
-            )}
+                <ToastContainer
+                    position="top-right"
+                    autoClose={5000}
+                    hideProgressBar={false}
+                    newestOnTop={false}
+                    closeOnClick
+                    rtl={false}
+                    pauseOnFocusLoss
+                    draggable
+                    pauseOnHover={false}
+                    theme="light"
+                />
+                
         </form>
   )
 }
 
 const mapStateToProps = state => ({
     isAuthenticated: state.auth.isAuthenticated,
-    isEmailValid: state.auth.isEmailValid
+    isEmailValid: state.auth.isEmailValid,
+    isEmailSent: state.auth.isEmailSent,
+    isPassValid: state.auth.isPassValid
 })
 export default connect(mapStateToProps, {login})(MainForm)

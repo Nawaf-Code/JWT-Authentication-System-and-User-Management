@@ -2,14 +2,13 @@ import React from "react";
 import { createRoot } from "react-dom/client";
 import RegisterPage from "./containers/RegisterPage.jsx";
 import Activate from "./containers/Activate.jsx";
-import ResetPassword from "./containers/ResetPassword.jsx";
-import ResetPasswordConfirm from "./containers/ResetPasswordConfirm.jsx";
-import Notification from "./components/Notification.jsx";
+//import ResetPassword from "./containers/ResetPassword.jsx";
+//import ResetPasswordConfirm from "./containers/ResetPasswordConfirm.jsx";
 import { Provider } from "react-redux";
 import store from "./store.js";
 import './App.css';
 // @ts-ignore
-import { BrowserRouter as Router, Routes, Route, Switch} from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route} from 'react-router-dom';
 
 const App = () => {
   return (
@@ -21,7 +20,6 @@ const App = () => {
           <Route exact path='/reset-password' element={<RegisterPage type='email'/>} />
           <Route exact path='/password/reset/confirm/:uid/:token' element={<RegisterPage type='newpass'/>} />
           <Route exact path='/activate/:uid/:token' element={<Activate />} />
-          <Route exact path='/testing' element={<Notification/>} />
         </Routes>
       </Router>
     </Provider>

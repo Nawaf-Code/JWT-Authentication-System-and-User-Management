@@ -26,7 +26,7 @@ export default function RegisterPage(props) {
       case "create":
         return <CreateForm type={getAuthMode}/>
       case "newpass":
-        return <NewPassForm/>
+        return <NewPassForm type={getAuthMode}/>
       default:
         return <LoginForm type={getAuthMode}/>
     }

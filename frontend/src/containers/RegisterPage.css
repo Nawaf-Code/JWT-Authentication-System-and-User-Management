@@ -11,6 +11,7 @@
 }
 .left{
     height: 200px;
+
 }
 .left, .right{
     display: flex;
@@ -18,13 +19,14 @@
     align-items: center;   
 }
 .left{
+    justify-content: left;
+    align-items: center; 
     background: url('/src/img/collegeinside.png');
     background-size: cover;
 }
 .left .copy{
     position: relative;
-    margin: 10px;
-    margin-right: 30px;
+    margin-left: 20px;
     color: white;
     text-align: left;
     -webkit-font-smoothing: antialiased;
@@ -171,7 +173,7 @@ a{
         display: block;
     }
     .left{
-        flex-basis: 70%;
+        flex-basis: 75%;
     }
     .split-screen::-webkit-scrollbar {
         display: none;

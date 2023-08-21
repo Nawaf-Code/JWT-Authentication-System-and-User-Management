@@ -12,7 +12,7 @@ import {
     PASSWORD_RESET_CONFIRM_SUCCESS,
     emailNotValid,
     emailValid,
-    RESET,
+    RESET_EMAIL_STATE,
     LOGOUT
 } from '../actions/types.js';
 
@@ -21,7 +21,9 @@ const initialState = {
     refresh: localStorage.getItem('refresh'),
     isAuthenticated: null,
     user: null,
-    isEmailValid: null
+    isEmailValid: null,
+    isEmailSent: null,
+    isPassValid: null,
 };
 
 export default function(state = initialState, action){
@@ -68,9 +70,10 @@ export default function(state = initialState, action){
                 ...state,
                 isEmailValid: true
             }
-        case RESET:
+        case RESET_EMAIL_STATE:
             return{
                 ...state,
+                isEmailSent: null,
                 isEmailValid: null
             }
         case LOGIN_FAIL:
@@ -85,15 +88,25 @@ export default function(state = initialState, action){
                 user: null
             }
         case PASSWORD_RESET_FAIL:
+            return{
+                ...state,
+                isEmailSent: false
+            }
         case PASSWORD_RESET_SUCCESS:
             return{
                 ...state,
+                isEmailSent: true,
                 isEmailValid: null
             }
         case PASSWORD_RESET_CONFIRM_FAIL:
+            return {
+                ...state,
+                isPassValid: false
+            }
         case PASSWORD_RESET_CONFIRM_SUCCESS:
             return {
-                ...state
+                ...state,
+                isPassValid: true
             }
         default:
             return state

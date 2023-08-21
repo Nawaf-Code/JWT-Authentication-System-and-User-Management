@@ -1,7 +1,10 @@
 import React, {useState} from 'react'
 // @ts-ignore
 import IconButton from "@material-ui/core/IconButton";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 // @ts-ignore
+import PasswordStrength from './PasswordStrength.jsx';
 import Visibility from "@material-ui/icons/Visibility";
 // @ts-ignore
 import InputAdornment from "@material-ui/core/InputAdornment";
@@ -18,12 +21,23 @@ import { reset_password_confirm } from '../actions/auth.js';
 
 
 function NewPassForm(props){
-    const [requestSent, setRequestSent] = useState(false);
+    const [text, setText ] = useState('');
     const { uid, token } = useParams();
+    
     const onSubmit = e => {
         e.preventDefault();
-        props.reset_password_confirm(uid, token, values.newPassword, values.reNewPassword);
-        setRequestSent(true)
+        if(text === "good" || text === "strong"){
+            if(values.newPassword === values.reNewPassword){
+                props.reset_password_confirm(uid, token, values.newPassword, values.reNewPassword);
+                props.type('login');
+                return <Navigate to='/' />
+            }else{
+                passNotify();
+            }
+        }else{
+            textnNotify();
+        }
+        
     };
     const [values, setValues] = React.useState({
         newPassword: "",
@@ -31,7 +45,6 @@ function NewPassForm(props){
         reNewPassword: "",
         showReNewPassword: false,
     });
-    console.log(values.newPassword, values.reNewPassword);
     const handleClickShowPassword1 = () => {
         setValues({ ...values, showNewPassword: !values.showNewPassword });
     };
@@ -47,19 +60,59 @@ function NewPassForm(props){
     const handlePasswordChange = (prop) => (e) => {
         setValues({ ...values, [e.target.name]: e.target.value });
     };
-    if(requestSent){
-        return <Navigate to='/' />
+    const getText = (currentText) =>{
+        setText(currentText);
     }
-    
+
+
+    let message = `Your password ${text}, please make it stronger !`;
+    const textnNotify = () =>  toast.warn(message, {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        });
+
+    const passNotify = () => toast.error("Passwords does not match!", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: false,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        });
+
+        
     return(
 
         <form onSubmit={e => onSubmit(e)}>
             <MainHeader/>
             <section className='copy'>
         <div className='create-form'>
-
+        
                 <h2 className='createword'>Rest Password</h2>
                 
+                <ToastContainer
+                position="top-right"
+                autoClose={5000}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+                theme="light"
+                />
+                {/* Same as */}
+                <ToastContainer />
+               
                 <div className='form-group' >
                 <Input
                 placeholder='Password'
@@ -76,6 +129,7 @@ function NewPassForm(props){
                         </IconButton>
                     </InputAdornment>}
                 />
+                <PasswordStrength password={values.newPassword} text={getText} />
                 </div>
                 <div className="form-group">
                 <Input
