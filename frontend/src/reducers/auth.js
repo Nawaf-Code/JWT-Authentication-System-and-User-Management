@@ -12,7 +12,11 @@ import {
     PASSWORD_RESET_CONFIRM_SUCCESS,
     emailNotValid,
     emailValid,
-    RESET_EMAIL_STATE,
+    RESET_STATE,
+    SIGNUP_SUCCESS,
+    SIGNUP_FAIL,
+    ACTIVATION_SUCCESS,
+    ACTIVATION_FAIL,
     LOGOUT
 } from '../actions/types.js';
 
@@ -24,6 +28,8 @@ const initialState = {
     isEmailValid: null,
     isEmailSent: null,
     isPassValid: null,
+    isSignUpSuccess: null,
+    isActivationSuccess: null
 };
 
 export default function(state = initialState, action){
@@ -70,11 +76,14 @@ export default function(state = initialState, action){
                 ...state,
                 isEmailValid: true
             }
-        case RESET_EMAIL_STATE:
+        case RESET_STATE:
             return{
                 ...state,
                 isEmailSent: null,
-                isEmailValid: null
+                isEmailValid: null,
+                isSignUpSuccess: null,
+                isActivationSuccess: null,
+                isPassValid: null
             }
         case LOGIN_FAIL:
         case LOGOUT:
@@ -107,6 +116,33 @@ export default function(state = initialState, action){
             return {
                 ...state,
                 isPassValid: true
+            }
+        case ACTIVATION_SUCCESS:
+            return {
+                ...state,
+                isActivationSuccess: true
+            }
+        case ACTIVATION_FAIL:
+            return {
+                ...state,
+                isActivationSuccess: false
+            }
+        case SIGNUP_SUCCESS:
+            return {
+                ...state,
+                isSignUpSuccess: true,
+                isAuthenticated: false
+            }
+        case SIGNUP_FAIL:
+            localStorage.removeItem('access');
+            localStorage.removeItem('refresh');
+            return {
+                ...state,
+                access: null,
+                refresh: null,
+                isAuthenticated: false,
+                user: null,
+                isSignUpSuccess: false
             }
         default:
             return state

@@ -144,7 +144,7 @@ AUTH_USER_MODEL = "accounts.User"
 
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.IsAuthenticated'
+        'rest_framework.permissions.AllowAny'
     ],
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
@@ -157,6 +157,7 @@ SIMPLE_JWT = {
    "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
 }
 
+#APPEND_SLASH=False
 
 DJOSER = {
     'LGIN_FIELD': 'username',

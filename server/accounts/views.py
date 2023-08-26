@@ -1,10 +1,10 @@
-from django.shortcuts import render
-
-# Create your views here.
+import json
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
-from accounts.models import User
-import json
+from django.http import JsonResponse
+from .models import User
+from rest_framework import generics
+from .serializers import UserSerializer
 
 
 @csrf_exempt  # Temporarily disable CSRF protection for demonstration purposes
@@ -18,3 +18,13 @@ def check_email(request):
             return JsonResponse({'email_exists': False}, status=200)
     else:
         return JsonResponse({'error': 'Invalid request'}, status=400)
+    
+
+
+class CreateUserView(generics.CreateAPIView):
+    serializer_class = UserSerializer
+    
+
+
+
+

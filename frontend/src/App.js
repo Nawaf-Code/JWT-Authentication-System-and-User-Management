@@ -2,8 +2,6 @@ import React from "react";
 import { createRoot } from "react-dom/client";
 import RegisterPage from "./containers/RegisterPage.jsx";
 import Activate from "./containers/Activate.jsx";
-//import ResetPassword from "./containers/ResetPassword.jsx";
-//import ResetPasswordConfirm from "./containers/ResetPasswordConfirm.jsx";
 import { Provider } from "react-redux";
 import store from "./store.js";
 import './App.css';

@@ -11,7 +11,7 @@ import VisibilityOff from "@material-ui/icons/VisibilityOff";
 // @ts-ignore
 import Input from "@material-ui/core/Input";
 import 'react-toastify/dist/ReactToastify.css';
-import { re_set_email_state } from '../actions/auth.js';
+import { re_set_state } from '../actions/auth.js';
 // @ts-ignore
 import {Link, Navigate} from 'react-router-dom';
 import MainHeader from './MainHeader.jsx';
@@ -37,7 +37,7 @@ function MainForm(props) {
                 
                 setTimeout(() => {
                     resolve();
-                    props.re_set_email_state();
+                    props.re_set_state();
                 },2000);
             }),
             {
@@ -84,6 +84,7 @@ function MainForm(props) {
     }
     if(props.isPassValid){
         notifyPass();
+        props.re_set_state();
     }
     const handlePasswordChange = (prop) => (event) => {
         setValues({ ...values, [prop]: event.target.value });

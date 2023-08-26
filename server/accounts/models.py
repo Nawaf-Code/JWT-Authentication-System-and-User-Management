@@ -15,6 +15,8 @@ class User(AbstractUser):
     base_role = Role.ADMIN
 
     role = models.CharField(choices=Role.choices, null=True)
+    is_active = models.BooleanField(default=False)
+    otp = models.CharField(max_length=6,blank=True, null=True)
 
     USERNAME_FIELD = "username"
     REQUIRED_FIELDS = ["email", "first_name", "last_name", 'role']
@@ -28,7 +30,7 @@ class StudentManager(BaseUserManager):
         result = super().get_queryset(*args, **kwargs)
         return result.filter(role=User.Role.STUDENT)
 
-    def create_user(self, username, email, first_name, last_name, role, password=None):
+    def create_user(self, username, email, first_name, last_name, role, password=None, **extra_fields):
         if not email:
             raise ValueError("User must have an email address")
         email = self.normalize_email(email)
@@ -53,7 +55,7 @@ class Student(User):
         return "only for students"
     
 
-@receiver(post_save, sender=User)
+@receiver(post_save, sender=Student)
 def create_user_profile(sender, instance, created, **kwargs):
     if created and instance.role == 'STUDENT':
         StudentProfile.objects.create(user=instance)

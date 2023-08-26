@@ -10,7 +10,7 @@ import { connect } from 'react-redux';
 import MainHeader from './MainHeader.jsx';
 import { reset_password } from '../actions/auth.js';
 import { check_email } from '../actions/auth.js';
-import { re_set_email_state } from '../actions/auth.js';
+import { re_set_state } from '../actions/auth.js';
 function EmailForm(props){
     
     //const [authMode, setAuthMode] = useState('create');
@@ -39,7 +39,7 @@ function EmailForm(props){
         return <Navigate to='/' />
     }
     if (props.isEmailValid === false){
-        props.re_set_email_state();
+        props.re_set_state();
         notify();
     }
     console.log(props.isEmailValid )
@@ -95,4 +95,4 @@ function EmailForm(props){
 const mapStateToProps = state => ({
     isEmailValid: state.auth.isEmailValid
 })
-export default connect(mapStateToProps, {check_email,reset_password, re_set_email_state})(EmailForm)
+export default connect(mapStateToProps, {check_email,reset_password, re_set_state})(EmailForm)
