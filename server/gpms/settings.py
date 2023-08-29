@@ -26,7 +26,7 @@ SECRET_KEY = "django-insecure-m-%22-(j(_*io_1i&n&inp@t(#7m8x=bgwpcbh*#07omhao4$3
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['192.168.0.101','127.0.0.1']
+ALLOWED_HOSTS = ['192.168.0.101','127.0.0.1', '172.20.10.2', '172.24.34.181']
 
 
 # Application definition
@@ -58,7 +58,7 @@ ROOT_URLCONF = "gpms.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [os.path.join(BASE_DIR, 'build')],
+        "DIRS": [os.path.join(BASE_DIR, 'static')],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -130,10 +130,16 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
 STATIC_URL = "/static/"
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'build/static')
-]
-STATIC_ROOT= os.path.join(BASE_DIR, 'static')
+if DEBUG:
+        STATICFILES_DIRS = [
+            os.path.join(BASE_DIR, 'static')
+       ]
+else:
+    STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+
+MEDIA_ROOT= os.path.join(BASE_DIR, 'build/static/media')
+MEDIA_URL = '/media/'
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field

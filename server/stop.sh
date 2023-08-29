@@ -1,6 +1,6 @@
 #!/bin/bash
 
-PIDS=$(lsof -i :8012 -t)
+PIDS=$(lsof -i :8013 -t)
 PID1=$(echo "$PIDS" | awk 'NR==1')
 PID2=$(echo "$PIDS" | awk 'NR==2')
 
