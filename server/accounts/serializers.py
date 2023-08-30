@@ -15,7 +15,7 @@ class StudentProfileSerializer(serializers.ModelSerializer):
 class SupervisorProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = SupervisorProfile
-        fields = ['Status', 'Major', 'Supervisor_For']
+        fields = ['Status', 'Major']
 
 class UserSerializer(serializers.ModelSerializer):
     student_profile = StudentProfileSerializer(required=False)

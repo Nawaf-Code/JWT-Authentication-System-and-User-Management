@@ -153,12 +153,29 @@ a{
     color: gray; /* Change the color */
     font-style: italic; /* Apply italic font style */
   }
-  
+  .resendbtn {
+    border: none;
+    background-color: inherit;
+    padding: 10px 28px;
+    font-size: 16px;
+    cursor: pointer;
+  }
+
+  .resendbtn:hover {
+    background: #eee;
+    width: 50%;
+    border-radius: 8px;
+}
+
+  .spinner-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
   /* Change the color of the selected option */
   #formGridState option:checked {
     background-color: #c61515; /* Change the background color */
   }
-
   @media screen and (min-width: 1000px){
     .split-screen{
         flex-direction: row;

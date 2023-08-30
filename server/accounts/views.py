@@ -7,6 +7,7 @@ from rest_framework import generics
 from .serializers import UserSerializer
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from .emails import send_otp
 
 
 
@@ -29,21 +30,37 @@ class register(APIView):
     def post(self, request):
         try:
            data = request.data
+
+           userEmail = data.get('email')
            serializer_class = UserSerializer(data=data)
            if serializer_class.is_valid():
                serializer_class.save()
+               is_sent = send_otp(userEmail)
                return Response({
                    'status': 200,
                    'message': 'user created succefuly',
-                   'data': serializer_class.data
+                   'data': serializer_class.data,
+                   'is sent': is_sent
                    })
            else:
                return Response({
                    'status': 400,
                    'message': 'something wrong',
-                   'data': serializer_class.errors                   })
+                   'data': serializer_class.errors
+                   })
         except Exception as e:
-            print(e) 
+            print(e)
+            return Response({
+                'status': 500,
+                'message': 'An error occurred',
+                'error': str(e)
+            }, status=500)
+
+
+
+
+
+
         
 
     

@@ -4,7 +4,7 @@ export default function Activate(){
     return(
        <div>
         <h1>
-            Activate
+            Activate test test test test
         </h1>
         
     </div>  
