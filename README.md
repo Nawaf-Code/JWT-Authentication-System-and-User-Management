@@ -8,8 +8,6 @@ This project is a Django and Django Rest Framework JWT authentication system wit
 - [Endpoints](#endpoints)
 - [How JWT Works](#how-jwt-works)
 - [Custom User Model](#custom-user-model)
-- [Screenshots](#screenshots)
-- [Contributing](#contributing)
 - [License](#license)
 
 ## Description
@@ -21,7 +19,7 @@ This system is built using Django and Django Rest Framework for the backend, and
 1. Clone the repository:
 
 ```sh
-git clone [[repository-url]](https://github.com/Nawaf-Code/Graduation-Projects-Management-System.git)https://github.com/Nawaf-Code/Graduation-Projects-Management-System.git
+git clone https://github.com/Nawaf-Code/Graduation-Projects-Management-System.git)https://github.com/Nawaf-Code/Graduation-Projects-Management-System.git
    ```
 2. Navigate to the project folder:
 
@@ -99,3 +97,17 @@ Example Response:
 
 ```
 ## How JWT Works
+![jwt](https://github.com/Nawaf-Code/Graduation-Projects-Management-System/assets/98234284/b2a279f0-aa2a-473a-834f-e7ecd59ae35f)
+
+## Custom User Model
+![user create](https://github.com/Nawaf-Code/Graduation-Projects-Management-System/assets/98234284/6764a326-cc75-45a7-8e4b-d26c002fb0db)
+## License
+```sh
+
+Replace `Nawaf Alzuwaymil`, `School/College User Management System`, `[[repository-url]](https://github.com/Nawaf-Code/Graduation-Projects-Management-System.git)https://github.com/Nawaf-Code/Graduation-Projects-Management-System.git)`, and other placeholders with your project-specific information.
+
+Make sure to include the screenshots in the repository and update the image paths in the README.md accordingly.
+
+This README.md provides clear information about how to install the project, the available endpoints, and explanations about JWT authentication and your custom user model, all in a professional and organized manner.
+
+```
