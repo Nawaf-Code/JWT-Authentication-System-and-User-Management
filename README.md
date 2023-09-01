@@ -104,7 +104,7 @@ Example Response:
 ## License
 ```sh
 
-Replace Nawaf Alzuwaymil, School/College User Management System, [repository url](https://github.com/Nawaf-Code/Graduation-Projects-Management-System.git), and other placeholders with your project-specific information.
+Replace Nawaf Alzuwaymil, School/College User Management System, `[repository url](https://github.com/Nawaf-Code/School-College-User-Management-System.git)`, and other placeholders with your project-specific information.
 
 Make sure to include the screenshots in the repository and update the image paths in the README.md accordingly.
 
