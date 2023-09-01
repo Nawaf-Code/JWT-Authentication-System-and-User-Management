@@ -1,21 +1,15 @@
 import React, {useState} from 'react'
-// @ts-ignore
 import IconButton from "@material-ui/core/IconButton";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-// @ts-ignore
 import PasswordStrength from './PasswordStrength.jsx';
 import Visibility from "@material-ui/icons/Visibility";
-// @ts-ignore
 import InputAdornment from "@material-ui/core/InputAdornment";
-// @ts-ignore
 import VisibilityOff from "@material-ui/icons/VisibilityOff";
 import {Navigate} from 'react-router-dom';
-// @ts-ignore
 import Input from "@material-ui/core/Input";
 import { useParams } from 'react-router-dom';
 import { connect } from 'react-redux';
-
 import MainHeader from './MainHeader.jsx';
 import { reset_password_confirm } from '../actions/auth.js';
 

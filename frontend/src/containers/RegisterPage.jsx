@@ -1,7 +1,6 @@
 import React, {useState} from 'react';
 import './RegisterPage.css';
 import LoginForm from '../components/LoginForm.jsx';
-// @ts-ignore
 import CreateForm from '../components/CreateForm.jsx';
 import EmailForm from '../components/EmailForm.jsx';
 import NewPassForm from '../components/NewPassForm.jsx';

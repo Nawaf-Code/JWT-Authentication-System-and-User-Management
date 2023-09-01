@@ -44,3 +44,7 @@ class UserSerializer(serializers.ModelSerializer):
             SupervisorProfile.objects.create(user=user, **supervisor_profile_data)
 
         return user
+    
+class VerifyAccountSerializer(serializers.Serializer):
+    email = serializers.EmailField()
+    code = serializers.CharField()

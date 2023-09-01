@@ -1,20 +1,13 @@
-import React, {useState} from 'react'
+import React, {useState} from 'react';
 import { motion } from "framer-motion";
-import { ToastContainer, toast } from 'react-toastify';
-// @ts-ignore
+import { ToastContainer } from 'react-toastify';
 import IconButton from "@material-ui/core/IconButton";
-// @ts-ignore
-// @ts-ignore
 import Visibility from "@material-ui/icons/Visibility";
-// @ts-ignore
 import InputAdornment from "@material-ui/core/InputAdornment";
-// @ts-ignore
 import VisibilityOff from "@material-ui/icons/VisibilityOff";
-// @ts-ignore
 import Input from "@material-ui/core/Input";
-// @ts-ignore
-import {Link, Redirect} from 'react-router-dom';
-import { ClapSpinner } from "react-spinners-kit";
+import {Link} from 'react-router-dom';
+import { StageSpinner } from "react-spinners-kit";
 import MainHeader from './MainHeader.jsx';
 
 
@@ -22,11 +15,33 @@ export default function CreateForm(props){
 
     const [selectedRole, setSelectedRole] = useState([])
     const [selectState, setSelectedState] = useState(false)
-    const [authMode, setAuthMode] = useState('create')
     const [isVerified, setIsVerified ] = useState(false);
     const [isCodeSent, setCodeStatus] = useState(false)
+    const [code, setCode] = useState('')
+
+    const [formData, setFormData] = useState({
+        first_name: '',
+        last_name: '',
+        kfu_id: '',
+        password: '',
+        re_password: '',
+        major: '',
+        role: '',
+        gender_or_superFor: '',
+        isLeader: false
+    });
+    const {
+        first_name ,last_name ,
+        kfu_id ,
+        password ,re_password ,
+        major ,role ,
+        gender_or_superFor,
+        isLeader } = formData;
+
+        const onChangeData = e => setFormData({ ...formData, [e.target.name]: e.target.value});
+
     const variants = {
-        hidden: { opacity: 0, x: '100%' }, // Move to the left by 100%
+        hidden: { opacity: 0, x: '300%' },
         visible: { opacity: 1, x: 0 },
     };
     
@@ -89,7 +104,15 @@ export default function CreateForm(props){
 
     const onSubmit = e =>{
         e.preventDefault()
-        setIsVerified(!isVerified)
+        /*props.create(
+            first_name ,last_name ,
+            kfu_id ,
+            password ,re_password ,
+            major ,role ,
+            gender_or_superFor,
+            isLeader
+        );*/
+        //setIsVerified(!isVerified)
     }
     let email = 'na6016na@gmail.com';
 
@@ -280,11 +303,11 @@ export default function CreateForm(props){
 
 
 
-                        <button className='btnt'  style={{marginTop: 25}}>Continue</button>
+                        <button className='btnt' disabled={!code} style={{marginTop: 25}}>Continue</button>
                         </>
                         ):(
                         <div className="spinner-container">
-                            <ClapSpinner size={35} color="#2e4c68" backColor="#2e4c68" frontColor="#2e4c68" loading={true} />
+                            <StageSpinner size={35} color="#2e4c68" backColor="#2e4c68" frontColor="#2e4c68" loading={true} />
                         </div>)}
                         </div>
                         

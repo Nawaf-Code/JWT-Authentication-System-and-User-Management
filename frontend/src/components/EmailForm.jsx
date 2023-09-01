@@ -2,20 +2,17 @@ import React, {useState} from 'react'
 import { ToastContainer, toast } from 'react-toastify';
 import {Link, Navigate} from 'react-router-dom';
 import 'react-toastify/dist/ReactToastify.css';
-// @ts-ignore
 import Input from "@material-ui/core/Input";
-
 import { connect } from 'react-redux';
-
 import MainHeader from './MainHeader.jsx';
 import { reset_password } from '../actions/auth.js';
 import { check_email } from '../actions/auth.js';
 import { re_set_state } from '../actions/auth.js';
+
 function EmailForm(props){
     
-    //const [authMode, setAuthMode] = useState('create');
-    //const [requestSent, setRequestSent] = useState(false);
     const [email, setEmail] = useState('');
+    const domail = "kfu.edu.sa";
 
     const onChangeData = e => setEmail(e.target.value);
     const notify = () => toast.error("Couldn't find your KFU id", {
@@ -30,7 +27,12 @@ function EmailForm(props){
         });
     const onSubmit = e => {
         e.preventDefault();
-        props.check_email(email);
+        if(email.includes(domail)){
+            props.check_email(email);
+        }else{
+            notify();
+        }
+        
     };
 
     if(props.isEmailValid){
@@ -73,7 +75,7 @@ function EmailForm(props){
 
                 <div className="row" >
                     <div className="col">
-                        <Input type="text" name='email' disableUnderline={true} className="form-control" placeholder="Email" onChange={e => onChangeData(e)}  />
+                        <Input type="text" name='email' disableUnderline={true} className="form-control noHover" placeholder="Email" onChange={e => onChangeData(e)}  />
                     </div>
 
                 </div>
@@ -81,7 +83,7 @@ function EmailForm(props){
                 
                 
                
-                <button className='btnt'  style={{marginTop: 40}}>Continue</button>
+                <button className='btnt'  style={{marginTop: 40}} disabled={!email} >Continue</button>
                 <p>Don't have an account? <Link onClick={() => handleAuthMod()} to="/create">Sign up</Link></p>
                 
             </div>

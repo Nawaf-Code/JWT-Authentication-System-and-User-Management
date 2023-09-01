@@ -1,7 +1,5 @@
 import React from 'react'
-// @ts-ignore
 import college from "./logos/collegelogo2.png";
-// @ts-ignore
 import kfu from "./logos/kfulogo.png";
 
 export default function MainHeader() {

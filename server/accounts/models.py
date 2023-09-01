@@ -3,7 +3,7 @@ from django.contrib.auth.models import AbstractUser, BaseUserManager
 from django.db.models.query import QuerySet
 from django.db.models.signals import post_save
 from django.dispatch import receiver
-
+from django.utils import timezone
 
 class User(AbstractUser):
     class Role(models.TextChoices):
@@ -17,9 +17,14 @@ class User(AbstractUser):
     role = models.CharField(choices=Role.choices, null=True)
     is_active = models.BooleanField(default=False)
     otp = models.CharField(max_length=6,blank=True, null=True)
+    otp_expiration = models.DateTimeField(blank=True, null=True)
+
 
     USERNAME_FIELD = "username"
     REQUIRED_FIELDS = ["email", "first_name", "last_name", 'role']
+
+    def is_expired(self):
+        return timezone.now() >= self.otp_expiration
 
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)

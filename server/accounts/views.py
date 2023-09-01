@@ -4,7 +4,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
 from .models import User
 from rest_framework import generics
-from .serializers import UserSerializer
+from .serializers import UserSerializer, VerifyAccountSerializer
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from .emails import send_otp
@@ -25,7 +25,7 @@ def check_email(request):
     
 
 
-class register(APIView):
+class Register(APIView):
 
     def post(self, request):
         try:
@@ -34,20 +34,71 @@ class register(APIView):
            userEmail = data.get('email')
            serializer_class = UserSerializer(data=data)
            if serializer_class.is_valid():
-               serializer_class.save()
-               is_sent = send_otp(userEmail)
-               return Response({
-                   'status': 200,
-                   'message': 'user created succefuly',
-                   'data': serializer_class.data,
-                   'is sent': is_sent
-                   })
+               user = User.objects.filter(email = userEmail)
+               if not user.exists():
+                  serializer_class.save()
+                  is_sent = send_otp(userEmail)
+
+                  return Response({
+                        'status': 200,
+                        'message': 'user created succefuly',
+                        'data': serializer_class.data,
+                        'is sent': is_sent
+                        })
+               else:
+                return Response({
+                    'status': 400,
+                    'message': 'the account is exists',
+                    'data': serializer_class.errors
+                    })
+               
+               
            else:
                return Response({
                    'status': 400,
                    'message': 'something wrong',
                    'data': serializer_class.errors
                    })
+        except Exception as e:
+            print(e)
+            return Response({
+                'status': 500,
+                'message': 'An error occurred',
+                'error': str(e)
+            }, status=500)
+        
+
+class VerifyOTP(APIView):
+    def post(self, request):
+        try:
+            data = request.data
+            serializer = VerifyAccountSerializer(data=data)
+
+            if serializer.is_valid():
+               email = serializer.data['email']
+               code = serializer.data['code']
+
+               user = User.objects.get(email=email)
+
+               if user.otp != code or user.is_expired():
+                   return Response({
+                    'status': 400,
+                    'message': 'invalid verfication'
+                    })
+               else:
+                   user.is_active = True
+                   user.save()
+
+               return Response({
+                   'status': 200,
+                   'message': True
+                   })
+            else:
+                return Response({
+                    'status': 400,
+                    'message': False
+                    })
+
         except Exception as e:
             print(e)
             return Response({

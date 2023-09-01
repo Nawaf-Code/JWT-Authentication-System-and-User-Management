@@ -1,27 +1,18 @@
-import React, {useState, useEffect} from 'react';
-// @ts-ignore
+import React, {useState} from 'react';
 import { ToastContainer, toast } from 'react-toastify';
 import IconButton from "@material-ui/core/IconButton";
-// @ts-ignore
 import Visibility from "@material-ui/icons/Visibility";
-// @ts-ignore
 import InputAdornment from "@material-ui/core/InputAdornment";
-// @ts-ignore
 import VisibilityOff from "@material-ui/icons/VisibilityOff";
-// @ts-ignore
 import Input from "@material-ui/core/Input";
 import 'react-toastify/dist/ReactToastify.css';
-import { re_set_state } from '../actions/auth.js';
-// @ts-ignore
 import {Link, Navigate} from 'react-router-dom';
 import MainHeader from './MainHeader.jsx';
 import { login } from '../actions/auth.js';
-
-// @ts-ignore
 import { connect } from 'react-redux';
+
 function MainForm(props) {
 
-    const [authMode, setAuthMode] = useState('login')
     const [formData, setFormData] = useState({
         username: '',
         password: ''

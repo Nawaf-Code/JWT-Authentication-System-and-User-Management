@@ -6,7 +6,7 @@
     display: none;
 }
 .right{
-    -ms-overflow-style: none;  /* IE and Edge */
+    -ms-overflow-style: none;
     scrollbar-width: none; 
 }
 .left{
@@ -82,11 +82,11 @@ form form-controll {
     font-size: 16px;
     letter-spacing: 1px;
 }
-.btnt:hover{
-    background: #49667a;
-    cursor: pointer;
-    color: white;
+.btnt[disabled] {
+    background: #728596;
+    color: rgb(228, 227, 227);
 }
+
 .left .copy p{
     display: none;
 }
@@ -108,16 +108,16 @@ form form-controll {
 }
 
 .logo-container .college {
-    width: 40%; /* Adjust the width as per your requirement */
-    height: auto; /* Maintain aspect ratio */
-    object-fit: contain; /* Ensures the entire logo is visible */
-    margin-right: 10px; /* Add space between the logos */
+    width: 40%;
+    height: auto;
+    object-fit: contain;
+    margin-right: 10px; 
   }
 .logo-container .kfu {
-    width: 20%; /* Adjust the width as per your requirement */
-    height: auto; /* Maintain aspect ratio */
-    object-fit: contain; /* Ensures the entire logo is visible */
-    margin-right: 10px; /* Add space between the logos */
+    width: 20%;
+    height: auto; 
+    object-fit: contain;
+    margin-right: 10px;
   }
 .copy .loginword{
     margin-top: 5rem;
@@ -150,8 +150,8 @@ a{
     margin: 0;
   }
   .placeholder-text {
-    color: gray; /* Change the color */
-    font-style: italic; /* Apply italic font style */
+    color: gray;
+    font-style: italic;
   }
   .resendbtn {
     border: none;
@@ -172,9 +172,9 @@ a{
     align-items: center;
     justify-content: center;
   }
-  /* Change the color of the selected option */
+
   #formGridState option:checked {
-    background-color: #c61515; /* Change the background color */
+    background-color: #c61515;
   }
   @media screen and (min-width: 1000px){
     .split-screen{
@@ -196,7 +196,7 @@ a{
         display: none;
     }
     .right{
-        -ms-overflow-style: none;  /* IE and Edge */
+        -ms-overflow-style: none;
     scrollbar-width: none;
     overflow-y: scroll;
     }
