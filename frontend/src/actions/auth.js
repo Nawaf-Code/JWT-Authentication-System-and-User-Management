@@ -18,7 +18,8 @@ import {
     SIGNUP_FAIL,
     ACTIVATION_SUCCESS,
     ACTIVATION_FAIL,
-    LOGOUT
+    LOGOUT,
+    CREATE_USER
 } from './types.js';
 
 
@@ -45,6 +46,16 @@ export const check_email = (email) => async (dispatch) => {
       console.error(err);
     }
   };
+
+export const create_user = (first_name ,last_name ,username ,password  ,major ,role ,gender_or_superFor,isLeader ) => async (dispatch) => {
+    const config = {
+        headers: {
+            'Content-Type': 'application/json',
+        }
+    };
+    const email = role === "SUPERVISOR" ? username+"@kfu.edu.sa" : username+"@student.kfu.edu.sa";
+    const body = JSON.stringify({})
+}
 export const re_set_state = () => dispatch => {
     dispatch({type: RESET_STATE});
 }

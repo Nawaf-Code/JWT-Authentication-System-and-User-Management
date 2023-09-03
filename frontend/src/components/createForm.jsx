@@ -1,6 +1,5 @@
 import React, {useState} from 'react';
 import { motion } from "framer-motion";
-import { ToastContainer } from 'react-toastify';
 import IconButton from "@material-ui/core/IconButton";
 import Visibility from "@material-ui/icons/Visibility";
 import InputAdornment from "@material-ui/core/InputAdornment";
@@ -9,12 +8,13 @@ import Input from "@material-ui/core/Input";
 import {Link} from 'react-router-dom';
 import { StageSpinner } from "react-spinners-kit";
 import MainHeader from './MainHeader.jsx';
+import { ToastContainer, toast } from 'react-toastify';
 
 
 export default function CreateForm(props){
 
     const [selectedRole, setSelectedRole] = useState([])
-    const [selectState, setSelectedState] = useState(false)
+    const [selectState, setSelectedState] = useState(false);
     const [isVerified, setIsVerified ] = useState(false);
     const [isCodeSent, setCodeStatus] = useState(false)
     const [code, setCode] = useState('')
@@ -22,7 +22,7 @@ export default function CreateForm(props){
     const [formData, setFormData] = useState({
         first_name: '',
         last_name: '',
-        kfu_id: '',
+        username: '',
         password: '',
         re_password: '',
         major: '',
@@ -32,14 +32,14 @@ export default function CreateForm(props){
     });
     const {
         first_name ,last_name ,
-        kfu_id ,
+        username ,
         password ,re_password ,
         major ,role ,
         gender_or_superFor,
         isLeader } = formData;
 
-        const onChangeData = e => setFormData({ ...formData, [e.target.name]: e.target.value});
-
+    const onChangeData = e => setFormData({ ...formData, [e.target.name]: e.target.value});
+        console.log(formData.re_password);
     const variants = {
         hidden: { opacity: 0, x: '300%' },
         visible: { opacity: 1, x: 0 },
@@ -70,15 +70,31 @@ export default function CreateForm(props){
         {value: 'CE', text: 'CE'},
     ]
 
+    const passNotify = () => toast.error("Passwords does not match!", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: false,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        });
+    
     const [values, setValues] = React.useState({
         newPassword: "",
         showNewPassword: false,
         reNewPassword: "",
         showReNewPassword: false,
     });
-
-    const handlePasswordChange = (prop) => (e) => {
+    const handlePasswordChange1 = (prop) => (e) => {
         setValues({ ...values, [e.target.name]: e.target.value });
+        setFormData({ ...formData, password: e.target.value})
+    };
+
+    const handlePasswordChange2 = (prop) => (e) => {
+        setValues({ ...values, [e.target.name]: e.target.value });
+        setFormData({ ...formData, re_password: e.target.value})
     };
 
     const handleClickShowPassword1 = () => {
@@ -97,16 +113,20 @@ export default function CreateForm(props){
         props.type('login')
     };
 
-    function handleSelectChange(event){
-        setSelectedRole(event.target.value);
+    function handleSelectChange(e){
+        setSelectedRole(e.target.value);
+        setFormData({ ...formData, [e.target.name]: e.target.value})
         setSelectedState(true)
     };
-
+    const handleCheckBox = () => {
+        setFormData({ ...formData, isLeader: !isLeader});
+    }
     const onSubmit = e =>{
         e.preventDefault()
-        /*props.create(
+
+        /*props.sign_up(
             first_name ,last_name ,
-            kfu_id ,
+            username ,
             password ,re_password ,
             major ,role ,
             gender_or_superFor,
@@ -136,14 +156,14 @@ export default function CreateForm(props){
                     <div className='form-group' >
                     <div className="form-row" >
                         <div className="col">
-                            <Input type="text" disableUnderline={true} className="form-control" placeholder="First name" />
+                            <Input type="text" disableUnderline={true} className="form-control" name='first_name' value={first_name} onChange={e => onChangeData(e)} placeholder="First name" />
                         </div>
                         <div className="col">
-                            <Input type="text" disableUnderline={true} className="form-control" placeholder="Last name" />
+                            <Input type="text" disableUnderline={true} className="form-control" name='last_name' value={last_name} onChange={e => onChangeData(e)}  placeholder="Last name" />
                         </div>
                     </div>
                     </div>
-                    <div className="form-group"> <Input className="form-control" type="text" disableUnderline={true} name="uid" placeholder="KFU Id" /></div>
+                    <div className="form-group"> <Input className="form-control" type="text" name="username" value={username} disableUnderline={true} onChange={e => onChangeData(e)}  placeholder="KFU Id" /></div>
                     <div className="form-group">
                     <Input
                     placeholder='Password'
@@ -151,7 +171,7 @@ export default function CreateForm(props){
                     className="form-control"
                     disableUnderline={true}
                     type={values.showNewPassword ? "text" : "password"}
-                    onChange={handlePasswordChange("password")}
+                    onChange={handlePasswordChange1("password")}
                     value={values.newPassword}
                     endAdornment={
                         <InputAdornment position="end" >
@@ -168,7 +188,7 @@ export default function CreateForm(props){
                     className="form-control"
                     disableUnderline={true}
                     type={values.showReNewPassword ? "text" : "password"}
-                    onChange={handlePasswordChange("password")}
+                    onChange={handlePasswordChange2("password")}
                     value={values.reNewPassword}
                     endAdornment={
                         <InputAdornment position="end" >
@@ -182,7 +202,7 @@ export default function CreateForm(props){
                     <div className="form-group">
                     <div className='form-row' >
                         <div className='col'>
-                            <select name="" className="custom-select">
+                            <select name="major" className="custom-select" onChange={e => onChangeData(e)}>
                             <option value="" >
                             Select a Major...
                         </option>
@@ -202,7 +222,7 @@ export default function CreateForm(props){
                     <div className='form-row' >
     
                         <div className='col mb-3'>
-                            <select name="" className="custom-select" id="validationCustom04" onChange={handleSelectChange}>
+                            <select name="role" className="custom-select" id="validationCustom04" onChange={e => handleSelectChange(e)}>
                         <option value="" >
                             Select a Role...
                         </option>
@@ -216,7 +236,7 @@ export default function CreateForm(props){
     
     
                         <div className='col mb-3'>
-                        <select defaultValue="" className="custom-select" disabled={selectState ? false : true}> 
+                        <select defaultValue="" name='gender_or_superFor' className="custom-select" disabled={selectState ? false : true} onChange={e => onChangeData(e)}> 
                         {// @ts-ignore
                         (selectedRole !== 'SUPERVISOR' && selectedRole !== 'STUDENT') && (
                         <option value="" disabled>
@@ -243,8 +263,8 @@ export default function CreateForm(props){
                         selectedRole === 'STUDENT')&&(
                             <div className="form-group">
                                 <div className="form-check">
-                                    <input type="checkbox" className="form-check-input" id="invalidCheck" />
-                                    <label className="form-check-label" for="invalidCheck">
+                                    <input type="checkbox" className="form-check-input" id="invalidCheck" name="isLeader" onChange={handleCheckBox}/>
+                                    <label className="form-check-label" htmlFor="invalidCheck">
                                     Set me as a leader
                                     </label>
                                 </div>

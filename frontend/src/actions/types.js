@@ -28,3 +28,5 @@ export const emailValid = 'emailValid';
 export const emailNotValid = 'emailNotValid';
 
 export const RESET_STATE = 'RESET_STATE';
+
+export const CREATE_USER = 'CREATE_USER';
