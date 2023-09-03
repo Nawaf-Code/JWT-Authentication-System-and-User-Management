@@ -68,7 +68,6 @@ Example Request for Student Registration:
     "last_name": "your_last_name",
     "email": "your_email@example.com",
     "password": "your_password",
-    "re_password": "your_password",
     "role": "STUDENT",
     "student_profile": {
         "Status": true,
