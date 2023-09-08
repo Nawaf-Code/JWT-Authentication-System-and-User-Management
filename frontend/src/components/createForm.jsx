@@ -5,13 +5,15 @@ import Visibility from "@material-ui/icons/Visibility";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import VisibilityOff from "@material-ui/icons/VisibilityOff";
 import Input from "@material-ui/core/Input";
-import {Link} from 'react-router-dom';
+import {Link, Navigate} from 'react-router-dom';
 import { StageSpinner } from "react-spinners-kit";
 import MainHeader from './MainHeader.jsx';
 import { ToastContainer, toast } from 'react-toastify';
+import { connect } from 'react-redux';
+import {create_user} from '../actions/auth.js';
 
 
-export default function CreateForm(props){
+function CreateForm(props){
 
     const [selectedRole, setSelectedRole] = useState([])
     const [selectState, setSelectedState] = useState(false);
@@ -135,6 +137,10 @@ export default function CreateForm(props){
         //setIsVerified(!isVerified)
     }
     let email = 'na6016na@gmail.com';
+
+    if(props.SIGNUP_SUCCESS){
+        alert('SIGNUP_SUCCESS')
+    }
 
     return(
 
@@ -345,3 +351,7 @@ export default function CreateForm(props){
     )
     
 }
+const mapStateToProps = state => ({
+    SIGNUP_SUCCESS: state.auth.SIGNUP_SUCCESS
+})
+export default connect(mapStateToProps, {create_user})(CreateForm)

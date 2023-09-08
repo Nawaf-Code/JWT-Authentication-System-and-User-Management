@@ -54,8 +54,39 @@ export const create_user = (first_name ,last_name ,username ,password  ,major ,r
         }
     };
     const email = role === "SUPERVISOR" ? username+"@kfu.edu.sa" : username+"@student.kfu.edu.sa";
-    const body = JSON.stringify({})
+    const user_profile = role.toLowerCase()+'_profile';
+    
+    const data = {
+        "username": username,
+        "first_name": first_name,
+        "last_name": last_name,
+        "email": email,
+        "password": password,
+        "role": role,
+        user_profile: {
+            "Status": true,
+            "Is_Leader": isLeader,
+            "Major": major,
+            "Gender": gender_or_superFor
+        }
+    }
+    const body = JSON.stringify(data);
+
+    try {
+        const res = await axios.post(`${process.env.REACT_APP_API_URL}/register/`,body ,config);
+
+        dispatch({
+            type: SIGNUP_SUCCESS,
+            payload: res.data
+        });
+    } catch (err) {
+        dispatch({
+            type: SIGNUP_FAIL
+        })
+    }
 }
+
+
 export const re_set_state = () => dispatch => {
     dispatch({type: RESET_STATE});
 }
