@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import { motion } from "framer-motion";
 import IconButton from "@material-ui/core/IconButton";
 import Visibility from "@material-ui/icons/Visibility";
@@ -10,7 +10,10 @@ import { StageSpinner } from "react-spinners-kit";
 import MainHeader from './MainHeader.jsx';
 import { ToastContainer, toast } from 'react-toastify';
 import { connect } from 'react-redux';
-import {create_user} from '../actions/auth.js';
+import {create_user, re_set_state} from '../actions/auth.js';
+import PasswordStrength from './PasswordStrength.jsx';
+import 'react-toastify/dist/ReactToastify.css';
+import LoadingBar from "react-top-loading-bar";
 
 
 function CreateForm(props){
@@ -19,19 +22,37 @@ function CreateForm(props){
     const [selectState, setSelectedState] = useState(false);
     const [isVerified, setIsVerified ] = useState(false);
     const [isCodeSent, setCodeStatus] = useState(false)
-    const [code, setCode] = useState('')
+    const [code, setCode] = useState('');
+    const [text, setText ] = useState('');
+    const [load, setLoad ] = useState(false);
+    const [userEmail, setUserEmail ] = useState('');
 
     const [formData, setFormData] = useState({
         first_name: '',
         last_name: '',
         username: '',
-        password: '',
-        re_password: '',
+        password: 'Na1na1na1',
+        re_password: 'Na1na1na1',
         major: '',
         role: '',
         gender_or_superFor: '',
         isLeader: false
     });
+
+
+    const [state, setState] = useState({
+        loadingBarProgress: 0
+    })
+    const loadingBarProgress = state
+    const onLoaderFinished = () => {
+        setState({ loadingBarProgress: 0 });
+      };
+    const complete = () => {
+        setState({ loadingBarProgress: 100 });
+      };
+    const add = (value) => {
+        setState({loadingBarProgress: state.loadingBarProgress+value})
+    }
     const {
         first_name ,last_name ,
         username ,
@@ -41,7 +62,7 @@ function CreateForm(props){
         isLeader } = formData;
 
     const onChangeData = e => setFormData({ ...formData, [e.target.name]: e.target.value});
-        console.log(formData.re_password);
+
     const variants = {
         hidden: { opacity: 0, x: '300%' },
         visible: { opacity: 1, x: 0 },
@@ -72,6 +93,18 @@ function CreateForm(props){
         {value: 'CE', text: 'CE'},
     ]
 
+    let message = `Your password is ${text}, please make it stronger !`;
+    const textnNotify = () =>  toast.warn(message, {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        });
+
     const passNotify = () => toast.error("Passwords does not match!", {
         position: "top-right",
         autoClose: 5000,
@@ -89,6 +122,9 @@ function CreateForm(props){
         reNewPassword: "",
         showReNewPassword: false,
     });
+    const getText = (currentText) =>{
+        setText(currentText);
+    }
     const handlePasswordChange1 = (prop) => (e) => {
         setValues({ ...values, [e.target.name]: e.target.value });
         setFormData({ ...formData, password: e.target.value})
@@ -124,32 +160,69 @@ function CreateForm(props){
         setFormData({ ...formData, isLeader: !isLeader});
     }
     const onSubmit = e =>{
-        e.preventDefault()
-
-        /*props.sign_up(
-            first_name ,last_name ,
-            username ,
-            password ,re_password ,
-            major ,role ,
-            gender_or_superFor,
-            isLeader
-        );*/
-        //setIsVerified(!isVerified)
-    }
-    let email = 'na6016na@gmail.com';
-
-    if(props.SIGNUP_SUCCESS){
-        alert('SIGNUP_SUCCESS')
+        e.preventDefault();
+        if(text === "good" || text === "strong" || 1==1){
+            if(values.newPassword === values.reNewPassword){
+                setLoad(!load)
+                add(47)
+                const email = formData.role === "SUPERVISOR" ? formData.username+"@kfu.edu.sa" : formData.username+"@student.kfu.edu.sa";
+                setUserEmail(email)
+                props.create_user(formData);
+            }else{
+                passNotify();
+            }
+        }else{
+            textnNotify();
+        }
     }
 
+    useEffect(() => {
+        if (props.isSignUpSuccess) {
+            complete();
+            console.log('isSignUpSuccess');
+            setIsVerified(true);
+            props.re_set_state();
+        }
+    }, [props.isSignUpSuccess]);
+
+    const timeExpiration = () =>{
+        const now = new Date();
+        const hours = now.getHours()+1;
+        const hours12 = hours % 12 || 12;
+        const minutes = now.getMinutes();
+        const formattedMinutes = minutes < 10 ? '0' + minutes : minutes;
+        const AM_PM = hours < 12? 'AM':'PM'
+        const time = `${hours12}:${formattedMinutes} ${AM_PM}`
+        return time
+    }
     return(
 
         <form onSubmit={e => onSubmit(e)}>
+            <LoadingBar
+          progress={state.loadingBarProgress}
+          height={5}
+          color="green"
+          onLoaderFinished={() => onLoaderFinished()}
+        />
             <MainHeader/>
             <section className='copy'>
         <div className='create-form'>
 
-                
+        <ToastContainer
+                position="top-right"
+                autoClose={5000}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+                theme="light"
+                />
+                {/* Same as */}
+                <ToastContainer />
+
                 <div className='move'>
                 <div className='forms-container'>
                     {!isVerified && (<motion.div className='createInputs'
@@ -162,17 +235,18 @@ function CreateForm(props){
                     <div className='form-group' >
                     <div className="form-row" >
                         <div className="col">
-                            <Input type="text" disableUnderline={true} className="form-control" name='first_name' value={first_name} onChange={e => onChangeData(e)} placeholder="First name" />
+                            <Input type="text" disableUnderline={true} className="form-control" name='first_name' value={first_name} onChange={e => onChangeData(e)} placeholder="First name" required/>
                         </div>
                         <div className="col">
-                            <Input type="text" disableUnderline={true} className="form-control" name='last_name' value={last_name} onChange={e => onChangeData(e)}  placeholder="Last name" />
+                            <Input type="text" disableUnderline={true} className="form-control" name='last_name' value={last_name} onChange={e => onChangeData(e)}  placeholder="Last name" required />
                         </div>
                     </div>
                     </div>
-                    <div className="form-group"> <Input className="form-control" type="text" name="username" value={username} disableUnderline={true} onChange={e => onChangeData(e)}  placeholder="KFU Id" /></div>
+                    <div className="form-group"> <Input className="form-control" type="text" name="username" value={username} disableUnderline={true} onChange={e => onChangeData(e)}  placeholder="KFU Id" required /></div>
                     <div className="form-group">
                     <Input
                     placeholder='Password'
+                    
                     name='newPassword'
                     className="form-control"
                     disableUnderline={true}
@@ -186,10 +260,14 @@ function CreateForm(props){
                             </IconButton>
                         </InputAdornment>}
                     />
+                    {values.newPassword !== '' && (
+                    <PasswordStrength password={values.newPassword} text={getText} />
+                )}
                     </div>
                     <div className="form-group">
                     <Input
                     placeholder="Confirm Password"
+                    
                     name='reNewPassword'
                     className="form-control"
                     disableUnderline={true}
@@ -203,12 +281,15 @@ function CreateForm(props){
                             </IconButton>
                         </InputAdornment>}
                     />
+                    {((values.newPassword !== values.reNewPassword) && (values.reNewPassword !=='')) && (
+                        <p style={{color: "red", marginTop:10}}>Passwords do not match.</p>
+                    )}
                     </div>
     
                     <div className="form-group">
                     <div className='form-row' >
                         <div className='col'>
-                            <select name="major" className="custom-select" onChange={e => onChangeData(e)}>
+                            <select name="major" className="custom-select" onChange={e => onChangeData(e)} required>
                             <option value="" >
                             Select a Major...
                         </option>
@@ -228,7 +309,7 @@ function CreateForm(props){
                     <div className='form-row' >
     
                         <div className='col mb-3'>
-                            <select name="role" className="custom-select" id="validationCustom04" onChange={e => handleSelectChange(e)}>
+                            <select name="role" className="custom-select" id="validationCustom04" onChange={e => handleSelectChange(e)} required>
                         <option value="" >
                             Select a Role...
                         </option>
@@ -242,17 +323,17 @@ function CreateForm(props){
     
     
                         <div className='col mb-3'>
-                        <select defaultValue="" name='gender_or_superFor' className="custom-select" disabled={selectState ? false : true} onChange={e => onChangeData(e)}> 
+                        <select defaultValue="" name='gender_or_superFor' className="custom-select" disabled={selectState ? false : true} onChange={e => onChangeData(e)} > 
                         {// @ts-ignore
                         (selectedRole !== 'SUPERVISOR' && selectedRole !== 'STUDENT') && (
-                        <option value="" disabled>
+                        <option value="" disabled >
                             ...
                         </option>
                         )}
                         {(
                         // @ts-ignore
                         selectedRole === 'STUDENT' ? STUDENT : SUPERVISOR).map(option => (
-                        <option key={option.value} value={option.value}>
+                        <option key={option.value} value={option.value} required>
                             {option.text}
                         </option>
                         ))}
@@ -277,7 +358,7 @@ function CreateForm(props){
                             </div>
                         )}
                    
-                    <button className='btnt' >create</button>
+                    <button className='btnt' disabled={load} >create</button>
                     <p>Already have account? <Link onClick={() => handleAuthMod()} to="/">Sign in</Link></p>
                     <hr style={{ marginTop: '50px', borderCollapse:'collapse'}}/>
                 <div>
@@ -310,10 +391,10 @@ function CreateForm(props){
 
                         <h2 className='createword'>Verify Email</h2>
                         <div className='form-group' >
-                        <p style={{marginBottom:1}}>We just sent your authentication code to {email}.</p>
-                        <p style={{marginTop: 0}}>The code will expire at 6:08AM +03.</p>
+                        <p style={{marginBottom:1}}>We just sent your authentication code to {userEmail}.</p>
+                        <p style={{marginTop: 0}}>The code will expire at {timeExpiration()} +03.</p>
                         
-                        {isCodeSent ? (
+                        {props.isOtpSent ? (
                         <>
                         <div className="row" >
                             <div className="col">
@@ -352,6 +433,7 @@ function CreateForm(props){
     
 }
 const mapStateToProps = state => ({
-    SIGNUP_SUCCESS: state.auth.SIGNUP_SUCCESS
+    isSignUpSuccess: state.auth.isSignUpSuccess,
+    isOtpSent: state.auth.isOtpSent
 })
-export default connect(mapStateToProps, {create_user})(CreateForm)
+export default connect(mapStateToProps, {create_user, re_set_state})(CreateForm)

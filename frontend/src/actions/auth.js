@@ -18,8 +18,8 @@ import {
     SIGNUP_FAIL,
     ACTIVATION_SUCCESS,
     ACTIVATION_FAIL,
-    LOGOUT,
-    CREATE_USER
+    OTP_SENT,
+    LOGOUT
 } from './types.js';
 
 
@@ -40,38 +40,39 @@ export const check_email = (email) => async (dispatch) => {
       if (res.data.email_exists) {
         dispatch({ type: emailValid }); // Replace 'emailValid' with the actual action type for valid email
       } else {
-        dispatch({ type: emailNotValid }); // Replace 'emailNotValid' with the actual action type for invalid email
+        dispatch({ type: emailNotValid });
       }
     } catch (err) {
       console.error(err);
     }
   };
 
-export const create_user = (first_name ,last_name ,username ,password  ,major ,role ,gender_or_superFor,isLeader ) => async (dispatch) => {
+export const create_user = (formData ) => async (dispatch) => {
     const config = {
         headers: {
             'Content-Type': 'application/json',
         }
     };
-    const email = role === "SUPERVISOR" ? username+"@kfu.edu.sa" : username+"@student.kfu.edu.sa";
-    const user_profile = role.toLowerCase()+'_profile';
+    const email = formData.role === "SUPERVISOR" ? formData.username+"@kfu.edu.sa" : formData.username+"@student.kfu.edu.sa";
+    const user_profile = formData.role.toLowerCase()+'_profile';
     
     const data = {
-        "username": username,
-        "first_name": first_name,
-        "last_name": last_name,
+        "username": formData.username,
+        "first_name": formData.first_name,
+        "last_name": formData.last_name,
         "email": email,
-        "password": password,
-        "role": role,
-        user_profile: {
-            "Status": true,
-            "Is_Leader": isLeader,
-            "Major": major,
-            "Gender": gender_or_superFor
-        }
-    }
-    const body = JSON.stringify(data);
+        "password": formData.password,
+        "role": formData.role
+    };
 
+    data[user_profile] = {
+            "Is_Leader": formData.isLeader,
+            "Major": formData.major,
+            "Gender": formData.gender_or_superFor
+        };
+
+    const body = JSON.stringify(data);
+    
     try {
         const res = await axios.post(`${process.env.REACT_APP_API_URL}/register/`,body ,config);
 
@@ -79,12 +80,18 @@ export const create_user = (first_name ,last_name ,username ,password  ,major ,r
             type: SIGNUP_SUCCESS,
             payload: res.data
         });
+
+        if (res.data.is_sent) {
+            dispatch({ type: OTP_SENT }); 
+          }
     } catch (err) {
         dispatch({
             type: SIGNUP_FAIL
         })
     }
-}
+    
+    
+};
 
 
 export const re_set_state = () => dispatch => {

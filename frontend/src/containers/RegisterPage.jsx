@@ -17,7 +17,6 @@ export default function RegisterPage(props) {
   const getAuthMode = (mode) => {
     handleAuthMod(mode)
   }
- console.log('currnet auth mode', authMode);
   const currentForm = () => {
     switch(authMode){
       case "email":

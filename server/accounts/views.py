@@ -43,13 +43,14 @@ class Register(APIView):
                         'status': 200,
                         'message': 'user created succefuly',
                         'data': serializer_class.data,
-                        'is sent': is_sent
+                        'is_sent': is_sent
                         })
                else:
                 return Response({
                     'status': 400,
                     'message': 'the account is exists',
-                    'data': serializer_class.errors
+                    'data': serializer_class.errors,
+                    'is_sent': False
                     })
                
                
@@ -57,14 +58,16 @@ class Register(APIView):
                return Response({
                    'status': 400,
                    'message': 'something wrong',
-                   'data': serializer_class.errors
+                   'data': serializer_class.errors,
+                   'is_sent': False
                    })
         except Exception as e:
             print(e)
             return Response({
                 'status': 500,
                 'message': 'An error occurred',
-                'error': str(e)
+                'error': str(e),
+                'is_sent': False
             }, status=500)
         
 

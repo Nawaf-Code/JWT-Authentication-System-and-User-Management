@@ -123,7 +123,10 @@ function NewPassForm(props){
                         </IconButton>
                     </InputAdornment>}
                 />
-                <PasswordStrength password={values.newPassword} text={getText} />
+                {values.newPassword !== '' && (
+                    <PasswordStrength password={values.newPassword} text={getText} />
+                )}
+                
                 </div>
                 <div className="form-group">
                 <Input
@@ -141,6 +144,10 @@ function NewPassForm(props){
                         </IconButton>
                     </InputAdornment>}
                 />
+                {((values.newPassword !== values.reNewPassword) && (values.reNewPassword !=='')) && (
+
+                    <p style={{color: "red", marginTop:10}}>Passwords do not match.</p>
+                )}
                 </div>
                 
                 

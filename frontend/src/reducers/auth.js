@@ -17,7 +17,8 @@ import {
     SIGNUP_FAIL,
     ACTIVATION_SUCCESS,
     ACTIVATION_FAIL,
-    LOGOUT
+    LOGOUT,
+    OTP_SENT
 } from '../actions/types.js';
 
 const initialState = {
@@ -29,7 +30,8 @@ const initialState = {
     isEmailSent: null,
     isPassValid: null,
     isSignUpSuccess: null,
-    isActivationSuccess: null
+    isActivationSuccess: null,
+    isOtpSent: null
 };
 
 export default function(state = initialState, action){
@@ -93,7 +95,7 @@ export default function(state = initialState, action){
                 ...state,
                 access: null,
                 refresh: null,
-                isAuthenticated: false,
+                isAuthenticated: null,
                 user: null
             }
         case PASSWORD_RESET_FAIL:
@@ -131,7 +133,12 @@ export default function(state = initialState, action){
             return {
                 ...state,
                 isSignUpSuccess: true,
-                isAuthenticated: false
+                
+            }
+        case OTP_SENT:
+            return {
+                ...state,
+                isOtpSent: true
             }
         case SIGNUP_FAIL:
             localStorage.removeItem('access');
