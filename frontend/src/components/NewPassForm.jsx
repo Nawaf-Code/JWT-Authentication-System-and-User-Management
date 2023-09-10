@@ -24,7 +24,7 @@ function NewPassForm(props){
             if(values.newPassword === values.reNewPassword){
                 props.reset_password_confirm(uid, token, values.newPassword, values.reNewPassword);
                 props.type('login');
-                return <Navigate to='/' />
+                return <Navigate to='/login' />
             }else{
                 passNotify();
             }

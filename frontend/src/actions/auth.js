@@ -19,7 +19,10 @@ import {
     ACTIVATION_SUCCESS,
     ACTIVATION_FAIL,
     OTP_SENT,
-    LOGOUT
+    LOGOUT,
+    OTP_SENT_AGAIN,
+    OTP_VALID,
+    OTP_FAIL
 } from './types.js';
 
 
@@ -47,6 +50,51 @@ export const check_email = (email) => async (dispatch) => {
     }
   };
 
+  export const re_send_otp = (email) => async (dispatch) => {
+    const config = {
+        headers: {
+          'Content-Type': 'application/json',
+        }
+      };
+
+    const requestData = { email: email };
+    const body = JSON.stringify(requestData);
+
+    try {
+        const res = await axios.post(`${process.env.REACT_APP_API_URL}/re_send_otp`, body, config);
+  
+      if (res.data.is_sent) {
+        dispatch({ type: OTP_SENT_AGAIN }); 
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  export const verify_otp_code = (code, email) => async (dispatch) => {
+    const config = {
+        headers: {
+          'Content-Type': 'application/json',
+        }
+      };
+
+    const requestData = { code: code, email: email };
+    const body = JSON.stringify(requestData);
+
+    try {
+        const res = await axios.post(`${process.env.REACT_APP_API_URL}/verify/`, body, config);
+  
+      if (res.data.is_valid) {
+        dispatch({ 
+            type: OTP_VALID,
+         }); 
+      }else{
+        dispatch({ type: OTP_FAIL }); 
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  };
 export const create_user = (formData ) => async (dispatch) => {
     const config = {
         headers: {
@@ -78,12 +126,9 @@ export const create_user = (formData ) => async (dispatch) => {
 
         dispatch({
             type: SIGNUP_SUCCESS,
-            payload: res.data
         });
-
-        if (res.data.is_sent) {
-            dispatch({ type: OTP_SENT }); 
-          }
+        
+        dispatch({ type: OTP_SENT });
     } catch (err) {
         dispatch({
             type: SIGNUP_FAIL

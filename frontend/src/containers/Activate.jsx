@@ -4,7 +4,7 @@ export default function Activate(){
     return(
        <div>
         <h1>
-            Activate test test test test
+            student page
         </h1>
         
     </div>  

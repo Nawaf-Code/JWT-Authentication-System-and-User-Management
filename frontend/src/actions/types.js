@@ -32,3 +32,8 @@ export const RESET_STATE = 'RESET_STATE';
 export const CREATE_USER = 'CREATE_USER';
 
 export const OTP_SENT = 'OTP_SENT';
+
+export const OTP_SENT_AGAIN = 'OTP_SENT_AGAIN';
+
+export const OTP_VALID = 'OTP_VALID';
+export const OTP_FAIL = 'OTP_FAIL';

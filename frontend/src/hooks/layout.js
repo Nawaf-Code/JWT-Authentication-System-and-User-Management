@@ -1,6 +1,8 @@
 import React, {useEffect} from "react";
 import { connect } from "react-redux";
 import {checkAuthenticated, load_user} from '../actions/auth.js'
+import HomePage from "../containers/HomePage.jsx";
+import NavBar from "../components/NavBar.jsx";
 const Layout = (props) => {
     useEffect(() => {
         props.checkAuthenticated();
@@ -8,7 +10,8 @@ const Layout = (props) => {
     }, [])
     return(
      <>
-    {props.children}
+    <NavBar/>
+    <HomePage />
     </>   
     )
 };

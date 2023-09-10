@@ -38,7 +38,7 @@ function EmailForm(props){
     if(props.isEmailValid){
         props.reset_password(email);
         props.type('login');
-        return <Navigate to='/' />
+        return <Navigate to='/login' />
     }
     if (props.isEmailValid === false){
         props.re_set_state();

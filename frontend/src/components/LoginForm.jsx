@@ -8,7 +8,7 @@ import Input from "@material-ui/core/Input";
 import 'react-toastify/dist/ReactToastify.css';
 import {Link, Navigate} from 'react-router-dom';
 import MainHeader from './MainHeader.jsx';
-import { login } from '../actions/auth.js';
+import { login, re_set_state } from '../actions/auth.js';
 import { connect } from 'react-redux';
 
 function MainForm(props) {
@@ -34,6 +34,23 @@ function MainForm(props) {
             {
             pending: "Loading, please wait...",
             success: "A password reset link has been sent to your email!"
+            },
+            {}
+        )
+    }
+
+    const loadedNotifySignUp = () => {
+        toast.promise(
+            new Promise((resolve) => {
+                
+                setTimeout(() => {
+                    resolve();
+                    props.re_set_state();
+                },2000);
+            }),
+            {
+            pending: "Loading, please wait...",
+            success: "Your account has been craeated successfully!"
             },
             {}
         )
@@ -73,15 +90,19 @@ function MainForm(props) {
     if(props.isAuthenticated){
         return <Navigate to='/' />
     }
+
     if(props.isPassValid){
         notifyPass();
-        props.re_set_state();
     }
+
+    if(props.isOtpValid){
+        loadedNotifySignUp();
+    }
+
     const handlePasswordChange = (prop) => (event) => {
         setValues({ ...values, [prop]: event.target.value });
         setFormData({ ...formData, password: event.target.value})
     };
-
     const handleAuthMod = (mode) => {
         props.type(mode)
     }
@@ -153,6 +174,7 @@ const mapStateToProps = state => ({
     isAuthenticated: state.auth.isAuthenticated,
     isEmailValid: state.auth.isEmailValid,
     isEmailSent: state.auth.isEmailSent,
-    isPassValid: state.auth.isPassValid
+    isPassValid: state.auth.isPassValid,
+    isOtpValid: state.auth.isOtpValid
 })
-export default connect(mapStateToProps, {login})(MainForm)
+export default connect(mapStateToProps, {login, re_set_state})(MainForm)

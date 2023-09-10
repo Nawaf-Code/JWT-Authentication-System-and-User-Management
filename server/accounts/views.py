@@ -24,6 +24,15 @@ def check_email(request):
         return JsonResponse({'error': 'Invalid request'}, status=400)
     
 
+@csrf_exempt 
+def re_send_otp(request):
+    if request.method == 'POST': 
+        data = json.loads(request.body)
+        email = data.get('email')
+        send_otp(email)
+        return JsonResponse({'is_sent': True}, status=200)
+    else:
+        return JsonResponse({'is_sent': False}, status=400)
 
 class Register(APIView):
 
@@ -86,7 +95,7 @@ class VerifyOTP(APIView):
                if user.otp != code or user.is_expired():
                    return Response({
                     'status': 400,
-                    'message': 'invalid verfication'
+                    'is_valid': False
                     })
                else:
                    user.is_active = True
@@ -94,12 +103,12 @@ class VerifyOTP(APIView):
 
                return Response({
                    'status': 200,
-                   'message': True
+                   'is_valid': True
                    })
             else:
                 return Response({
                     'status': 400,
-                    'message': False
+                   'is_valid': False
                     })
 
         except Exception as e:
@@ -107,6 +116,7 @@ class VerifyOTP(APIView):
             return Response({
                 'status': 500,
                 'message': 'An error occurred',
+                'is_valid': False,
                 'error': str(e)
             }, status=500)
 

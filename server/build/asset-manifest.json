@@ -1,16 +1,16 @@
 {
   "files": {
     "main.css": "/static/css/main.fe54994f.css",
-    "main.js": "/static/js/main.dc13f5d2.js",
+    "main.js": "/static/js/main.d0fb8a6b.js",
     "static/media/collegeinside.png": "/static/media/collegeinside.ad2746e9540cf82f2365.png",
     "static/media/collegelogo2.png": "/static/media/collegelogo2.353feb3d15c484346d8f.png",
     "static/media/kfulogo.png": "/static/media/kfulogo.7258cdc8265c21c6636e.png",
     "index.html": "/index.html",
     "main.fe54994f.css.map": "/static/css/main.fe54994f.css.map",
-    "main.dc13f5d2.js.map": "/static/js/main.dc13f5d2.js.map"
+    "main.d0fb8a6b.js.map": "/static/js/main.d0fb8a6b.js.map"
   },
   "entrypoints": [
     "static/css/main.fe54994f.css",
-    "static/js/main.dc13f5d2.js"
+    "static/js/main.d0fb8a6b.js"
   ]
 }

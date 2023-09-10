@@ -10,7 +10,7 @@ import { StageSpinner } from "react-spinners-kit";
 import MainHeader from './MainHeader.jsx';
 import { ToastContainer, toast } from 'react-toastify';
 import { connect } from 'react-redux';
-import {create_user, re_set_state} from '../actions/auth.js';
+import {create_user, re_set_state, re_send_otp, verify_otp_code} from '../actions/auth.js';
 import PasswordStrength from './PasswordStrength.jsx';
 import 'react-toastify/dist/ReactToastify.css';
 import LoadingBar from "react-top-loading-bar";
@@ -18,7 +18,7 @@ import LoadingBar from "react-top-loading-bar";
 
 function CreateForm(props){
 
-    const [selectedRole, setSelectedRole] = useState([])
+    const [selectedRole, setSelectedRole] = useState([]);
     const [selectState, setSelectedState] = useState(false);
     const [isVerified, setIsVerified ] = useState(false);
     const [isCodeSent, setCodeStatus] = useState(false)
@@ -26,6 +26,8 @@ function CreateForm(props){
     const [text, setText ] = useState('');
     const [load, setLoad ] = useState(false);
     const [userEmail, setUserEmail ] = useState('');
+    const [timeOTP, setTimeOTP ] = useState('');
+    const [actionType, setActionType] = useState('');
 
     const [formData, setFormData] = useState({
         first_name: '',
@@ -142,13 +144,18 @@ function CreateForm(props){
     const handleClickShowPassword2 = () => {
         setValues({ ...values, showReNewPassword: !values.showReNewPassword });
     };
-
+    const handleReSend = () => {
+        setActionType('re_send')
+    }
+    const handleVerfiy = () => {
+        setActionType('verfiy')
+    }
     const handleMouseDownPassword = (event) => {
         event.preventDefault();
     };
 
     const handleAuthMod = () => {
-        props.type('login')
+        props.type('login');
     };
 
     function handleSelectChange(e){
@@ -161,13 +168,21 @@ function CreateForm(props){
     }
     const onSubmit = e =>{
         e.preventDefault();
-        if(text === "good" || text === "strong" || 1==1){
+        if(text === "good" || text === "strong"){
             if(values.newPassword === values.reNewPassword){
-                setLoad(!load)
-                add(47)
-                const email = formData.role === "SUPERVISOR" ? formData.username+"@kfu.edu.sa" : formData.username+"@student.kfu.edu.sa";
-                setUserEmail(email)
-                props.create_user(formData);
+                if (!isVerified){
+                    setLoad(!load)
+                    add(47);
+                    const email = formData.role === "SUPERVISOR" ? formData.username+"@kfu.edu.sa" : formData.username+"@student.kfu.edu.sa";
+                    setUserEmail(email)
+                    props.create_user(formData);
+                }else{
+                    if(actionType === 're_send'){
+                        re_sent();
+                    }else{
+                        verify_otp();
+                    }
+                }
             }else{
                 passNotify();
             }
@@ -177,14 +192,23 @@ function CreateForm(props){
     }
 
     useEffect(() => {
-        if (props.isSignUpSuccess) {
+        if (props.isSignUpSuccess && !isVerified) {
             complete();
-            console.log('isSignUpSuccess');
             setIsVerified(true);
             props.re_set_state();
         }
     }, [props.isSignUpSuccess]);
 
+
+    useEffect(() => {
+        if (props.isOtpSent) {
+            const time = timeExpiration()
+            setTimeOTP(time);
+        }
+    }, [props.isOtpSent]);
+
+    
+    
     const timeExpiration = () =>{
         const now = new Date();
         const hours = now.getHours()+1;
@@ -195,6 +219,47 @@ function CreateForm(props){
         const time = `${hours12}:${formattedMinutes} ${AM_PM}`
         return time
     }
+    const notifyOtpReSend = () => toast.success('verfication code has been re send successfully', {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: false,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        });
+
+
+    useEffect(() => {
+        if (props.isOtpReSend){
+            complete();
+            const time = timeExpiration();
+            setTimeOTP(time);
+            props.re_set_state();
+            notifyOtpReSend(); 
+            console.log('test');
+        }
+    }, [props.isOtpReSend]);
+
+    const re_sent = () => {
+        add(56);
+        if(actionType === 're_send'){
+            props.re_send_otp(userEmail);
+        }
+    };
+    
+    const verify_otp = () => {
+        if(actionType === 'verfiy'){
+            props.verify_otp_code(code, userEmail);
+        }
+    }
+
+    if (props.isOtpValid){
+        props.type('login');
+        return <Navigate to='/login' />
+    }
+    const onChangeCode = e => setCode(e.target.value);
     return(
 
         <form onSubmit={e => onSubmit(e)}>
@@ -220,8 +285,6 @@ function CreateForm(props){
                 pauseOnHover
                 theme="light"
                 />
-                {/* Same as */}
-                <ToastContainer />
 
                 <div className='move'>
                 <div className='forms-container'>
@@ -346,7 +409,6 @@ function CreateForm(props){
                     </div>
                     
                     {(
-                        // @ts-ignore
                         selectedRole === 'STUDENT')&&(
                             <div className="form-group">
                                 <div className="form-check">
@@ -376,41 +438,32 @@ function CreateForm(props){
                 >
                     <div className='create-form'>
 
-                        <ToastContainer
-                            position="top-right"
-                            autoClose={5000}
-                            hideProgressBar={false}
-                            newestOnTop={false}
-                            closeOnClick
-                            rtl={false}
-                            pauseOnFocusLoss
-                            draggable
-                            pauseOnHover={false}
-                            theme="light"
-                        />
+                        
 
                         <h2 className='createword'>Verify Email</h2>
                         <div className='form-group' >
                         <p style={{marginBottom:1}}>We just sent your authentication code to {userEmail}.</p>
-                        <p style={{marginTop: 0}}>The code will expire at {timeExpiration()} +03.</p>
+                        <p style={{marginTop: 0}}>The code will expire at {timeOTP} +03.</p>
                         
                         {props.isOtpSent ? (
                         <>
                         <div className="row" >
                             <div className="col">
-                                <Input type="text" name='email' disableUnderline={true} className="form-control" placeholder="XXXXXX"  />
-                                
+                                <Input type="text" name='email' disableUnderline={true} className="form-control" placeholder="XXXXXX" onChange={e => onChangeCode(e)} />
+                                {(props.isOtpValid === false) && (
+                            <p style={{color: "red", marginTop:10}}>Invalid OTP code</p>
+                        )}
                             </div>
 
                         </div>
                         <div style={{textAlign:'center', marginTop:10 }}>
-                                    <button class="resendbtn">Resend code</button>
+                                    <button class="resendbtn" onClick={() => handleReSend()} >Resend code</button>
                                 </div>
                         
 
 
 
-                        <button className='btnt' disabled={!code} style={{marginTop: 25}}>Continue</button>
+                        <button className='btnt' disabled={!code} style={{marginTop: 25}} onClick={() => handleVerfiy()} >Continue</button>
                         </>
                         ):(
                         <div className="spinner-container">
@@ -434,6 +487,8 @@ function CreateForm(props){
 }
 const mapStateToProps = state => ({
     isSignUpSuccess: state.auth.isSignUpSuccess,
-    isOtpSent: state.auth.isOtpSent
+    isOtpSent: state.auth.isOtpSent,
+    isOtpReSend: state.auth.isOtpReSend,
+    isOtpValid: state.auth.isOtpValid
 })
-export default connect(mapStateToProps, {create_user, re_set_state})(CreateForm)
+export default connect(mapStateToProps, {create_user, re_send_otp, re_set_state, verify_otp_code})(CreateForm)
