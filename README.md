@@ -19,7 +19,7 @@ This system is built using Django and Django Rest Framework for the backend, and
 1. Clone the repository:
 
 ```sh
-git clone https://github.com/Nawaf-Code/Graduation-Projects-Management-System.git)https://github.com/Nawaf-Code/Graduation-Projects-Management-System.git
+git clone https://github.com/Nawaf-Code/JWT-Authentication-System-and-User-Management.git
    ```
 2. Navigate to the project folder:
 
