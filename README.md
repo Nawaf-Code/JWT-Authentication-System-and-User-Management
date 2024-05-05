@@ -42,14 +42,14 @@ Endpoint to create JWT token:
 POST /auth/jwt/create/
 ```
 Example Request:
-```sh
+```json
 {
     "username": "your_username",
     "password": "your_password"
 }
 ```
 Example Response:
-```sh
+```json
 {
     "token": "your_access_token"
 }
@@ -57,11 +57,11 @@ Example Response:
 ### User Registration
 Endpoint to register a new user:
 
-```sh
+```json
 POST /register/
 ```
 Example Request for Student Registration:
-```sh
+```json
 {
     "username": "your_username",
     "first_name": "your_first_name",
@@ -83,13 +83,13 @@ Endpoint to check if an email is available:
 POST /check_email/
 ```
 Example Request:
-```sh
+```json
 {
     "email": "your_email@example.com"
 }
 ```
 Example Response:
-```sh
+```json
 {
     "email_exists": false
 }
