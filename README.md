@@ -57,7 +57,7 @@ Example Response:
 ### User Registration
 Endpoint to register a new user:
 
-```json
+```sh
 POST /register/
 ```
 Example Request for Student Registration:
